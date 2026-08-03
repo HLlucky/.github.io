@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<title>宝宝辅食月历 · 6-12月龄</title>
+<style>
+@media print{body{background:#fff!important;font-size:9px;line-height:1.3;-webkit-print-color-adjust:exact;print-color-adjust:exact}.container{padding:0;max-width:100%;background:#fff!important}.hero{padding:2px 0 4px}.hero h1{font-size:18px;gap:4px}.hero h1 .icon{font-size:14px}.hero .hero-sub{padding:2px 12px;font-size:8px;gap:3px;letter-spacing:1px;margin-top:2px;background:#fefaf5}.hero .hero-sub .dot{width:3px;height:3px}.tab-switch,.print-btn-wrap,.cui-sidebar,.disclaimer-sidebar,.mobile-fabs,.popup-overlay,.baby-info-bar,.hero{display:none!important}.shared-head{display:none!important}.app-head{padding:0!important}.panel-print-head{display:block!important}.tab-panel{display:block!important;padding:0 2px;page-break-after:always;background:#fff!important}.tab-panel:last-of-type{page-break-after:avoid}.panel-top{margin-bottom:4px}.panel-top h2{font-size:16px;margin-bottom:1px;letter-spacing:1px}.panel-top .meta{font-size:8px;letter-spacing:.5px}.highlights{gap:4px;margin-bottom:6px}.hl-card{padding:3px 8px;gap:4px;border-radius:6px}.hl-card .hl-emoji{font-size:12px}.hl-card .hl-title{font-size:9px}.section-divider{margin-bottom:4px;gap:6px}.section-divider .line{height:1px}.section-divider span{font-size:8px;letter-spacing:2px}.days-grid{grid-template-columns:repeat(6,1fr);gap:3px}.day-card{border-radius:5px;box-shadow:none;break-inside:avoid;background:#fff!important}.day-card .d-top{padding:2px 4px 1px}.day-card .d-num{font-size:9px}.day-card .d-date-meta{font-size:7px}.day-card .d-body{padding:2px 3px;gap:3px}.day-card .d-slot{padding:2px 3px;border-radius:4px;gap:1px;background:none!important}.day-card .d-label{font-size:7px;letter-spacing:.5px;padding-bottom:1px;border-bottom-width:1px}.day-card .d-slot .d-food{font-size:8px;font-weight:600;line-height:1.3}.day-card .d-foot{padding:0 3px 2px}.day-card .d-note{font-size:6px;padding:1px 3px;border-left-width:2px;line-height:1.3;background:none!important}.day-card .d-note .note-bar{height:1px}.day-card.today{box-shadow:none}.day-card.today::after{display:none}.footer-note{display:none}.hero-deco{display:none}}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--apricot:#f5a87a;--apricot-light:#fff4ec;--coral:#f2838b;--coral-light:#fff0f2;--matcha:#7db892;--matcha-light:#f3faf5;--wisteria:#a89cc4;--wisteria-light:#f8f5fc;--butter:#f7d06d;--butter-light:#fffbea;--sky:#86b5d4;--sky-light:#f3f8fc;--bg:#fef9f4;--ink:#3e3530;--ink-soft:#6d6258;--sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;--display:"ZCOOL KuaiLe","Ma Shan Zheng","STKaiti","KaiTi",serif}
+body{font-family:var(--sans);background:#faf7f2;color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.8;font-size:15px;overflow-x:hidden}
+html{scrollbar-width:thin;scrollbar-color:rgba(200,170,130,.35) transparent}
+html::-webkit-scrollbar{width:7px}
+html::-webkit-scrollbar-track{background:transparent}
+html::-webkit-scrollbar-thumb{background:rgba(200,170,130,.35);border-radius:4px}
+html::-webkit-scrollbar-thumb:hover{background:rgba(200,170,130,.6)}
+.container{max-width:1200px;margin:0 auto;padding:24px 32px 120px;position:relative}
+/* 顶部固定区：标题/宝宝信息/月龄提示/月龄切换/阶段标题/要点/每日搭配 全部固定，仅日历卡片滚动 */
+.app-head{position:relative;z-index:50;background:#faf7f2}
+.panel-print-head{display:none}
+.shared-head.reveal .panel-top,.shared-head.reveal .highlights{animation:contentIn .42s cubic-bezier(.22,.61,.36,1) both}
+.hero{text-align:center;padding:8px 0 12px;position:relative}
+.hero-title-row{position:relative;display:flex;align-items:center;justify-content:center}
+.hero-pill{position:absolute;top:50%;transform:translateY(-50%);display:inline-flex;align-items:center;gap:5px;padding:8px 14px;border:1.5px solid rgba(232,200,160,.6);border-radius:18px;background:linear-gradient(135deg,#fef0e0,#fde0c8);color:#c0683a;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--sans);box-shadow:0 3px 10px rgba(180,140,100,.12);transition:transform .2s,box-shadow .2s,border-color .2s;letter-spacing:.5px;white-space:nowrap;animation:heroPillFade .55s ease both}
+.hero-pill:first-child{left:0;animation-delay:.04s}
+.hero-pill:last-child{right:0;animation-delay:.16s}
+.hero-pill:hover{transform:translateY(calc(-50% - 2px));box-shadow:0 9px 20px rgba(180,140,100,.24);border-color:#e0a878}
+.hero-pill:active{transform:translateY(-50%) scale(.95)}
+.hero-pill .pp-emoji{font-size:15px;line-height:1;animation:heroEmojiFloat 3s ease-in-out infinite}
+.hero-pill:hover .pp-emoji{animation:heroEmojiWiggle .7s ease}
+.hero-pill-warn{background:linear-gradient(135deg,#fefdf9,#fdf7ee);color:#c06830;border-color:#e0c8a0}
+/* 崔玉涛按钮：洋气整体动效（流光渐变 + 悬浮 + 扫光 + 呼吸光晕） */
+.hero-pill-cui{
+  background:linear-gradient(135deg,#ffe9d2,#ffd6b0,#ffe9d2,#ffd0a8);
+  background-size:300% 300%;
+  border-color:rgba(240,180,120,.55);
+  color:#b85e2e;
+  z-index:2;
+  animation:cuiFloat 3s ease-in-out infinite,cuiGrad 5s ease infinite,heroPillFade .55s ease both;
+  animation-delay:.04s,0s,0s;
+}
+.hero-pill-cui::before{
+  content:"";position:absolute;inset:0;border-radius:18px;
+  background:radial-gradient(closest-side,rgba(245,168,122,.5),rgba(245,168,122,0) 72%);
+  filter:blur(7px);z-index:-1;animation:cuiGlow 2.6s ease-in-out infinite;
+}
+.hero-pill-cui::after{
+  content:"";position:absolute;top:0;left:-65%;width:45%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.7),transparent);
+  transform:skewX(-18deg);pointer-events:none;animation:cuiSweep 3.6s ease-in-out infinite;
+}
+.hero-pill-cui:hover{
+  transform:translateY(-50%) scale(1.06);
+  box-shadow:0 12px 26px rgba(230,150,90,.32);
+  border-color:#f0a868;
+}
+.hero-pill-cui:hover::after{animation-duration:1.8s}
+@keyframes cuiFloat{0%,100%{top:50%}50%{top:calc(50% - 5px)}}
+@keyframes cuiGrad{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes cuiGlow{0%,100%{opacity:.45;transform:scale(.95)}50%{opacity:1;transform:scale(1.08)}}
+@keyframes cuiSweep{0%{left:-65%;opacity:0}25%{opacity:.9}55%{left:135%;opacity:0}100%{left:135%;opacity:0}}
+@keyframes heroPillFade{from{opacity:0}to{opacity:1}}
+@keyframes heroEmojiFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-2.5px)}}
+@keyframes heroEmojiWiggle{0%,100%{transform:rotate(0)}20%{transform:rotate(-13deg)}40%{transform:rotate(11deg)}60%{transform:rotate(-8deg)}80%{transform:rotate(5deg)}}
+@media (prefers-reduced-motion:reduce){.hero-pill,.hero-pill .pp-emoji,.hero-pill:hover .pp-emoji{animation:none!important}.hero-pill:hover{transform:translateY(-50%)}.hero-pill-cui,.hero-pill-cui::before,.hero-pill-cui::after{animation:none!important}.hero-pill-cui{top:50%;z-index:auto}}
+.hero .hero-deco{pointer-events:none;z-index:0;display:none}
+.hero h1{position:relative;z-index:1;font-family:var(--display);font-size:34px;font-weight:400;color:#7b6e5d;display:flex;align-items:center;justify-content:center;gap:10px;-webkit-text-fill-color:initial;background:none}
+.hero h1 .icon{font-size:26px;-webkit-text-fill-color:initial}
+.hero .hero-sub{margin-top:10px;display:inline-flex;align-items:center;gap:7px;padding:6px 18px;border-radius:18px;background:rgba(255,250,245,.5);border:1px solid rgba(240,220,200,.4);font-size:13px;color:#a0856f;letter-spacing:2px;font-weight:600;animation:heroSubFloat 3.6s ease-in-out infinite}
+.hero .hero-sub .dot{width:5px;height:5px;border-radius:50%;background:#e8b87a;animation:dotPulse 1.8s ease-in-out infinite}
+.hero .hero-sub .dot:nth-of-type(2){animation-delay:.3s}
+.hero .hero-sub .dot:nth-of-type(3){animation-delay:.6s}
+.hero .hero-sub .dot:nth-of-type(4){animation-delay:.9s}
+@keyframes heroSubFloat{0%,100%{transform:translateY(0);box-shadow:0 0 0 rgba(232,184,122,0)}50%{transform:translateY(-3px);box-shadow:0 6px 18px rgba(232,184,122,.22)}}
+@keyframes dotPulse{0%,100%{transform:scale(1);opacity:.45}50%{transform:scale(1.7);opacity:1}}
+.tab-switch{position:sticky;top:0;z-index:60;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 auto 20px;background:#faf7f2;padding:10px 0;box-shadow:0 2px 6px -4px rgba(110,85,55,.18)}
+.tab-switch .tab-btn{flex:0 0 auto;padding:12px 26px;border:2px solid transparent;border-radius:28px;background:#fff;color:#a09080;font-size:15px;font-weight:600;cursor:pointer;font-family:var(--sans);letter-spacing:1px;transition:all .25s;white-space:nowrap;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.tab-switch .tab-btn:nth-child(1).active{background:var(--apricot-light);border-color:var(--apricot);color:#c0683a}
+.tab-switch .tab-btn:nth-child(2).active{background:var(--coral-light);border-color:var(--coral);color:#c8555e}
+.tab-switch .tab-btn:nth-child(3).active{background:var(--matcha-light);border-color:var(--matcha);color:#4e8462}
+.tab-switch .tab-btn:nth-child(4).active{background:var(--wisteria-light);border-color:var(--wisteria);color:#7b6898}
+.tab-switch .tab-btn:hover:not(.active){border-color:#e0d5c8;color:var(--ink-soft)}
+#panelStage{display:grid;align-items:start;padding-top:18px}
+#panelStage::-webkit-scrollbar{display:none}
+#panelStage>.tab-panel{grid-area:1/1}
+.tab-panel{opacity:0;visibility:hidden;transition:opacity .32s ease,visibility 0s linear .32s;pointer-events:none}
+.tab-panel.active{opacity:1;visibility:visible;transition:opacity .32s ease,visibility 0s;pointer-events:auto}
+@keyframes contentIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.tab-panel.active .panel-top,.tab-panel.active .highlights,.tab-panel.active .section-divider,.tab-panel.active .days-grid{animation:contentIn .42s cubic-bezier(.22,.61,.36,1) both}
+.panel-top{text-align:center;margin-bottom:12px}
+.panel-top .phase-badge{display:none}
+.panel-top h2{font-family:var(--display);font-size:32px;font-weight:400;letter-spacing:2px;margin-bottom:4px}
+.panel-top h2 span{font-weight:700}
+.p1 h2 span{color:#d49160}.p2 h2 span{color:#e07680}.p3 h2 span{color:#6ba37f}.p4 h2 span{color:#9383b8}
+.panel-top .meta{font-size:12px;color:#a09080;letter-spacing:1px}
+.p1 .meta{color:#c09880}.p2 .meta{color:#c08080}.p3 .meta{color:#80a080}.p4 .meta{color:#9880a0}
+.highlights{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;justify-content:center}
+.hl-card{border-radius:10px;padding:8px 14px;transition:all .25s;border:none;display:flex;align-items:center;gap:8px;min-width:0}
+.hl-card .hl-emoji{font-size:20px;line-height:1;flex-shrink:0}
+.hl-card .hl-body{flex:1;min-width:0}
+.hl-card .hl-title{font-size:12px;font-weight:800;color:var(--ink);letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hl-card .hl-desc{display:none}
+.p1 .hl-card{background:linear-gradient(135deg,#fff7f0,#fff0e5)}
+.p2 .hl-card{background:linear-gradient(135deg,#fff5f5,#ffeaea)}
+.p3 .hl-card{background:linear-gradient(135deg,#f8fdf8,#edf7ed)}
+.p4 .hl-card{background:linear-gradient(135deg,#f8f6fc,#f0e8f6)}
+.section-divider{display:flex;align-items:center;gap:10px;margin:0 0 14px}
+.section-divider .line{flex:1;height:1px;border-radius:1px;background:linear-gradient(90deg,transparent,#e0c8a0,transparent)}
+.section-divider span{font-size:10px;font-weight:700;color:#c8a880;letter-spacing:3px;white-space:nowrap}
+.days-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+/* 大屏（≥1440）：放宽容器，日历锁定 5 列，卡片更舒展 */
+@media (min-width:1440px){
+  .container{max-width:1480px}
+  .days-grid{grid-template-columns:repeat(5,1fr);gap:14px}
+}
+/* 超大屏（≥1920）：容器进一步放宽，5 列卡片更宽更透气 */
+@media (min-width:1920px){
+  .container{max-width:1740px}
+  .days-grid{gap:16px}
+}
+.day-card{border-radius:16px;padding:0;transition:all .25s;border:none;box-shadow:0 1px 4px rgba(0,0,0,.04);display:flex;flex-direction:column;overflow:hidden}
+.day-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-2px)}
+.p1 .day-card{background:#fffefc}
+.p2 .day-card{background:#fffefc}
+.p3 .day-card{background:#fffefc}
+.p4 .day-card{background:#fffefc}
+.day-card.weekend{background:#fffefa}
+.day-card.today{position:relative;box-shadow:0 0 0 2px #f2838b,0 4px 16px rgba(242,131,139,.18);background:#fff8f8}
+.day-card.today::after{content:'✨ 今天';position:absolute;top:-8px;right:-6px;background:linear-gradient(135deg,#f2838b,#e0606a);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:12px;letter-spacing:1px;box-shadow:0 2px 8px rgba(242,131,139,.35)}
+.day-card .d-top{padding:10px 16px 6px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0e8de}
+.p1 .d-top{border-bottom-color:#f0e2d0}
+.p2 .d-top{border-bottom-color:#f0dcd6}
+.p3 .d-top{border-bottom-color:#dce8d8}
+.p4 .d-top{border-bottom-color:#e4dcee}
+.day-card .d-num{font-family:var(--display);font-size:22px;font-weight:700;color:#d49160;line-height:1}
+.day-card .d-date-meta{font-size:11px;font-weight:700;color:#c8b098;letter-spacing:1px}
+.p1 .d-num{color:#d49160}.p2 .d-num{color:#e07680}.p3 .d-num{color:#6ba37f}.p4 .d-num{color:#9383b8}
+.p1 .d-date-meta{color:#c09880}.p2 .d-date-meta{color:#c08080}.p3 .d-date-meta{color:#80a080}.p4 .d-date-meta{color:#9880a0}
+.day-card .d-body{padding:10px 12px 8px;display:flex;gap:12px;flex:1}
+.day-card .d-slot{flex:1;border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:4px}
+.day-card .d-slot.am{background:linear-gradient(135deg,#fefaf5,#fdf3e8)}
+.day-card .d-slot.pm{background:linear-gradient(135deg,#f8f6fe,#efeaf6)}
+.day-card .d-label{font-size:11px;font-weight:900;letter-spacing:1.5px;padding-bottom:3px;border-bottom:2px solid;display:inline-block;align-self:flex-start}
+.day-card .d-slot.am .d-label{color:#d07030;border-bottom-color:rgba(208,112,48,.25)}
+.day-card .d-slot.pm .d-label{color:#7b60a0;border-bottom-color:rgba(123,96,160,.25)}
+.day-card .d-slot .d-food{font-size:13px;color:var(--ink);font-weight:700;line-height:1.5}
+.day-card .d-food .food-item{display:block}
+.day-card .d-food .food-item:not(:first-child){margin-top:3px}
+.day-card .d-slot .d-gram{font-size:11px;color:#b8957a;font-weight:400}
+.day-card .d-meal{display:none}
+.day-card .d-meal.pm{display:none}
+.day-card .d-foot{padding:0 12px 10px}
+.day-card .d-note{padding:8px 10px 8px 12px;border-radius:10px;font-size:13px;font-weight:500;line-height:1.6;border-left:4px solid;position:relative;overflow:visible;transition:all .2s}.day-card .d-note .note-text{display:block}.day-card .d-note .note-bar{position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:0 0 10px 10px;transition:width .5s ease}@keyframes tipPop{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.d-note.note-new{background:linear-gradient(135deg,#fff7ed,#ffe8d6);border-color:#f5994a;color:#c06830;animation:notePulse 2s ease-in-out infinite}
+.d-note.note-testing{background:linear-gradient(135deg,#fefaf6,#fdf3e8);border-color:#e8b87a;color:#a07050}
+.d-note.note-done{background:linear-gradient(135deg,#f6fbf6,#e8f4e8);border-color:#7db892;color:#4e8462}
+.d-note.note-milestone{background:linear-gradient(135deg,#fdf6ff,#f5e8ff);border-color:#a89cc4;color:#6e5a8a;font-weight:700}
+.d-note.note-tip{background:linear-gradient(135deg,#fff8f0,#fff3e8);border-color:#e8b87a;color:#a07050}
+.d-note .note-bar{position:absolute;bottom:0;left:0;height:3px;border-radius:0 2px 2px 0;transition:width .5s ease}
+.d-note.note-testing .note-bar{background:linear-gradient(90deg,#e8b87a,#e89260)}
+.d-note.note-bar-1 .note-bar{width:33%}
+.d-note.note-bar-2 .note-bar{width:66%}
+@keyframes notePulse{0%,100%{box-shadow:0 0 0 0 rgba(245,153,74,.2)}50%{box-shadow:0 0 0 6px rgba(245,153,74,0)}}
+.print-btn-wrap{position:fixed;bottom:0;left:0;right:0;z-index:300;display:flex;justify-content:center;padding:16px 24px 20px;gap:16px;flex-wrap:wrap;background:linear-gradient(180deg,transparent 0%,rgba(250,247,242,.92) 30%,rgba(250,247,242,.98) 100%);pointer-events:none}
+.print-btn-wrap>*{pointer-events:auto}
+.print-btn{padding:14px 34px;border:none;background:linear-gradient(135deg,#f5a87a,#e89260);color:#fff;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:2px;border-radius:28px;box-shadow:0 6px 22px rgba(245,168,122,.35);transition:all .3s;font-family:var(--sans)}
+.print-btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(245,168,122,.45)}
+.print-btn.pdf-btn{background:#fff;color:#8b6f5a;border:1.5px solid #e0ceb8;box-shadow:0 3px 14px rgba(0,0,0,.06)}
+.print-btn.pdf-btn:hover{background:#fdf8f2;box-shadow:0 6px 20px rgba(0,0,0,.10)}
+.footer-note{text-align:center;padding:40px 0 12px;font-family:var(--display);font-size:13px;color:#c8b098;letter-spacing:5px}
+.cui-sidebar{display:none;position:relative;width:100%;max-width:440px;margin:24px auto 0;background:rgba(255,254,252,.92);border:1px solid rgba(239,224,206,.5);border-radius:18px;padding:18px 16px 14px;box-shadow:0 4px 20px rgba(180,140,100,.10);transition:all .35s cubic-bezier(.22,.61,.36,1);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.cui-sidebar .cui-top{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.cui-sidebar .cui-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#fef0e0,#fde0c8);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#c0683a;flex-shrink:0}
+.cui-sidebar .cui-name{font-weight:700;font-size:14px;color:var(--ink);line-height:1.3}
+.cui-sidebar .cui-name small{display:block;font-size:10px;font-weight:500;color:#b8957a;letter-spacing:1px}
+.cui-sidebar .cui-bio{margin:8px 0 12px;padding:8px 10px;background:rgba(254,240,224,.5);border-radius:10px;font-size:10px;color:#8b6f5a;line-height:1.6;border:1px solid rgba(232,200,160,.3)}
+.cui-sidebar .cui-item{display:flex;align-items:flex-start;gap:8px;font-size:11px;color:var(--ink-soft);line-height:1.5;padding:9px 11px;margin-bottom:7px;background:rgba(254,246,238,.75);border:1px solid rgba(240,220,196,.55);border-radius:11px;transition:background .2s}
+.cui-sidebar .cui-item:hover{background:rgba(253,239,228,.95)}
+.cui-sidebar .cui-dot{flex-shrink:0;width:6px;height:6px;border-radius:50%;background:#e8b87a;margin-top:5px}
+.cui-sidebar .cui-toggle{margin-left:auto;width:24px;height:24px;border-radius:50%;border:1px solid rgba(232,200,160,.6);background:#fff;color:#c0683a;font-size:16px;font-weight:700;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.cui-sidebar .cui-toggle:hover{background:#fdeee2;border-color:#e0a878}
+.cui-sidebar.mini{width:auto;padding:12px 12px}
+.cui-sidebar.mini .cui-top{margin-bottom:0}
+.cui-sidebar.mini .cui-bio,.cui-sidebar.mini .cui-list{display:none}
+.mobile-fabs{display:none;position:relative;justify-content:center;gap:12px;margin:18px 0 0;padding:0 12px}
+.to-top{position:fixed;right:16px;bottom:112px;z-index:280;width:38px;height:38px;border-radius:50%;border:1.5px solid #f0c39e;background:linear-gradient(145deg,#fff8f0 0%,#ffe7d4 100%);color:#c0683a;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(192,104,58,.18),inset 0 1px 2px rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transform:translateY(12px) scale(.92);transition:opacity .3s ease,transform .3s ease,visibility 0s linear .3s,background .2s,color .2s,border-color .2s,box-shadow .2s}
+.to-top.show{opacity:1;visibility:visible;transform:translateY(0) scale(1);transition:opacity .3s ease,transform .3s ease,background .2s,color .2s,border-color .2s,box-shadow .2s}
+.to-top:hover{background:linear-gradient(145deg,#fff3e8 0%,#ffd9bf 100%);border-color:#e9a878;color:#a8502a;box-shadow:0 6px 20px rgba(232,150,90,.32),inset 0 1px 2px rgba(255,255,255,.9)}
+.to-top:active{transform:translateY(0) scale(.86)}
+.to-top::before{content:'';position:absolute;inset:0;border-radius:50%;border:1.5px solid #f0c39e;opacity:0;animation:toTopPing 2.6s ease-out infinite;pointer-events:none}
+.to-top .tt-arrow{display:inline-block;animation:ttBob 2.2s ease-in-out infinite}
+@keyframes toTopPing{0%{transform:scale(1);opacity:.45}60%{opacity:0}100%{transform:scale(1.9);opacity:0}}
+@keyframes ttBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-2.5px)}}
+@media(max-width:580px){.to-top{bottom:128px;right:14px}}
+.mobile-fabs .mf-btn{width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;font-size:18px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.12);transition:all .25s;display:flex;align-items:center;justify-content:center;position:relative}
+.mf-btn.mf-cui{width:auto;height:auto;padding:6px 12px 6px 10px;border-radius:14px 14px 14px 4px;background:linear-gradient(135deg,#fef0e0,#fde0c8);color:#c0683a;font-size:18px;font-weight:700;animation:cuiBubble 2.8s ease-in-out infinite}
+.mf-btn.mf-cui::before{content:'崔玉涛';font-family:var(--sans);font-size:11px;font-weight:700;color:#c0683a;margin-left:5px;white-space:nowrap;letter-spacing:.5px}
+.mf-btn.mf-cui::after{content:'';position:absolute;bottom:-5px;right:8px;width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid #fde0c8}
+@keyframes cuiBubble{0%,100%{transform:translateY(0);box-shadow:0 4px 14px rgba(192,104,58,.12)}25%{transform:translateY(-3px);box-shadow:0 8px 18px rgba(192,104,58,.2)}50%{transform:translateY(0);box-shadow:0 4px 14px rgba(192,104,58,.12)}75%{transform:translateY(-2px);box-shadow:0 6px 16px rgba(192,104,58,.16)}}
+.mf-btn.mf-warn{background:linear-gradient(135deg,#fefdf9,#fdf7ee);color:#c06830;animation:warnPulse 2s ease-in-out infinite}
+.mf-btn.mf-warn::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:2px solid rgba(192,104,48,.25);animation:warnRing 2s ease-in-out infinite}
+.mf-btn:hover{transform:scale(1.15)!important;transition:all .2s}
+@keyframes warnPulse{0%,100%{box-shadow:0 4px 14px rgba(0,0,0,.12)}50%{box-shadow:0 4px 20px rgba(200,140,80,.3),0 0 0 4px rgba(200,140,80,.08)}}
+@keyframes warnRing{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.6;transform:scale(1.12)}}
+.popup-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(40,32,24,.45);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+.popup-overlay.show{display:flex}
+.print-btn[disabled]{opacity:.75;cursor:not-allowed}
+.pdf-btn.loading{pointer-events:none;opacity:.88}
+.pdf-btn.pdf-done{background:#7db892!important;color:#fff!important;border-color:#7db892!important;box-shadow:0 4px 16px rgba(125,184,146,.4)}
+.pdf-btn .btn-spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(232,146,96,.3);border-top-color:#e89260;border-radius:50%;margin-right:7px;vertical-align:-2px;animation:btnSpin .7s linear infinite}
+@keyframes btnSpin{to{transform:rotate(360deg)}}
+.popup-card{background:#fffefc;border-radius:22px;width:90%;max-width:360px;box-shadow:0 24px 64px rgba(40,32,24,.18),0 0 0 1px rgba(200,170,130,.12);animation:modalBounce .4s cubic-bezier(.22,.61,.36,1);overflow:hidden}
+.popup-card .popup-header{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 14px;border-bottom:1px solid #f0e8dc}
+.popup-card .popup-header .ph-left{display:flex;align-items:center;gap:10px}
+.popup-card .popup-close{width:24px;height:24px;border-radius:50%;border:1.5px solid #e8d8c0;background:#fff;font-size:12px;color:#b8957a;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;align-self:flex-start}
+.popup-card .popup-close:hover{background:#fdf5ed;color:#a07040;border-color:#d4b898}
+.popup-card .popup-body{padding:14px 14px 10px;font-size:13px;color:var(--ink-soft);line-height:1.85}
+.popup-actions{display:flex;gap:12px;justify-content:flex-end;margin-top:16px;padding:0 4px 6px}
+.popup-btn{padding:10px 22px;border:none;border-radius:22px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:1px;font-family:var(--sans);transition:all .2s}
+.popup-btn.ghost{background:#f2ece3;color:#8b6f5a}
+.popup-btn.ghost:hover{background:#ece2d4}
+.popup-btn.primary{background:linear-gradient(135deg,#f5a87a,#e89260);color:#fff;box-shadow:0 4px 14px rgba(245,168,122,.35)}
+.popup-btn.primary:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(245,168,122,.45)}
+.popup-card .popup-body .cui-item{display:flex;align-items:center;gap:10px;font-size:13px;color:#4a3525;line-height:1.7;padding:9px 12px 9px 8px;border-radius:8px;background:transparent;position:relative;transition:background .3s ease;font-weight:600}
+.popup-card .popup-body .cui-item:hover{background:#fdf5ec}
+.popup-card .popup-body .cui-num{flex-shrink:0;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#e89260,#d07040);color:#fff;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;margin-right:2px;box-shadow:0 2px 6px rgba(212,112,64,.25)}
+.cui-group{margin-bottom:10px;border-radius:12px;overflow:hidden;border:1.5px solid #e0c8a0;box-shadow:0 2px 8px rgba(180,130,80,.06)}
+.cui-group-head{display:flex;align-items:center;justify-content:center;gap:10px;padding:11px 16px;background:linear-gradient(90deg,#fdf2e4,#fae8d4);cursor:pointer;user-select:none;transition:background .2s}
+.cui-group-head:hover{background:linear-gradient(90deg,#fce8d0,#f8dcc0)}
+.cui-group-icon{font-size:17px;line-height:1}
+.cui-group-label{font-size:14px;font-weight:800;color:#6e4018;letter-spacing:1.5px}
+.cui-group-arrow{font-size:13px;color:#b08050;transition:transform .3s ease}
+.cui-group.cui-folded .cui-group-arrow{transform:rotate(-90deg)}
+.cui-group-body{overflow:hidden;transition:max-height .35s ease;max-height:500px}
+.cui-group.cui-folded .cui-group-body{max-height:0}
+.cui-group-body .cui-item{padding:8px 16px 8px 14px;border-bottom:1px solid #eedcc0}
+.cui-group-body .cui-item:last-child{border-bottom:none}
+.cui-footer-text{text-align:center;padding:10px 0 4px;font-size:11px;color:#b08050;letter-spacing:.5px}
+.popup-card .popup-body .ds-section{padding:10px 0;border-bottom:1px solid #f2e8d8}
+.popup-card .popup-body .ds-section:last-child{border-bottom:none;padding-bottom:0}
+.popup-card .popup-body .ds-section:first-child{padding-top:0}
+.popup-card .popup-body .ds-label{font-size:12px;font-weight:800;color:#c06830;margin-bottom:4px;letter-spacing:1px}
+.popup-card .popup-body .ds-text{font-size:12px;color:#7a5a3a;line-height:1.7}
+.popup-card .ph-emoji{font-size:28px;line-height:1}
+.popup-card .ph-title{font-family:var(--display);font-size:18px;color:var(--ink);font-weight:400;letter-spacing:1px}
+.popup-card .ph-sub{font-size:10px;color:#a08870;letter-spacing:.5px;line-height:1.5;max-width:260px}
+.popup-card .ph-book-link{color:#c0683a;text-decoration:none;border-bottom:1px dashed #d49160;font-weight:600;transition:color .2s,border-color .2s}
+.popup-card .ph-book-link:hover{color:#a05020;border-bottom-color:#a05020}
+.disclaimer-sidebar{display:none;position:relative;width:100%;max-width:440px;margin:16px auto 0;background:linear-gradient(135deg,#fefdf9,#fdf7ee);border:1.5px solid #e0c8a0;border-radius:18px;padding:14px 14px 12px;box-shadow:0 4px 16px rgba(180,140,100,.10);font-size:12px;color:#8b6f5a;line-height:1.7;transition:all .35s cubic-bezier(.22,.61,.36,1)}
+.disclaimer-sidebar .ds-icon{font-size:14px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.disclaimer-sidebar .ds-icon strong{font-size:12px;color:#c06830;letter-spacing:1px;font-weight:800}
+.disclaimer-sidebar .ds-section{padding:6px 0;border-bottom:1px solid #f2e0c8}
+.disclaimer-sidebar .ds-section:last-child{border-bottom:none;padding-bottom:0}
+.disclaimer-sidebar .ds-section:first-child{padding-top:0}
+.disclaimer-sidebar .ds-label{font-size:10px;font-weight:800;color:#c06830;margin-bottom:2px;letter-spacing:1px}
+.disclaimer-sidebar .ds-text{font-size:10px;color:#7a5a3a;line-height:1.6}
+@media(max-width:1024px){.cui-sidebar{font-size:11px;padding:14px 12px 10px}.cui-sidebar .cui-item{font-size:10px}.cui-sidebar .cui-bio{font-size:9px;padding:6px 8px}.cui-sidebar .cui-avatar{width:36px;height:36px;font-size:14px}.cui-sidebar .cui-name{font-size:13px}.cui-sidebar .cui-name small{font-size:9px}.disclaimer-sidebar{padding:12px 12px 10px}.disclaimer-sidebar .ds-text{font-size:9px}.container{padding:20px 16px 120px}}
+@media(max-width:820px){.cui-sidebar{display:none!important}.disclaimer-sidebar{display:none!important}.mobile-fabs{display:none!important}.days-grid{grid-template-columns:repeat(3,1fr);gap:10px}.highlights{grid-template-columns:repeat(2,1fr)}.hero{gap:10px}.hero h1{font-size:28px}.hero-pill{font-size:11px;padding:6px 10px;gap:4px}.hero-pill .pp-emoji{font-size:13px}.panel-top h2{font-size:26px}.tab-switch{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.tab-switch .tab-btn{width:100%;padding:11px 8px;font-size:13px;text-align:center}.container{padding:32px 20px 120px}}
+@media(max-width:580px){.container{padding:16px 14px 120px}.hero{padding:4px 0 8px}.hero h1{font-size:26px;gap:6px}.hero h1 .icon{font-size:20px}.hero .hero-sub{padding:4px 14px;font-size:11px;letter-spacing:1px;gap:4px}.hero .hero-sub .dot{width:3px;height:3px}.tab-switch{gap:5px;margin-bottom:14px}.tab-switch .tab-btn{padding:8px 14px;font-size:13px;letter-spacing:0;border-radius:22px}.panel-top{margin-bottom:14px}.panel-top h2{font-size:24px}.panel-top .meta{font-size:11px}.highlights{gap:6px;margin-bottom:14px}.hl-card{padding:6px 10px;gap:6px;border-radius:8px}.hl-card .hl-emoji{font-size:16px}.hl-card .hl-title{font-size:11px}.section-divider{margin-bottom:12px}.section-divider span{font-size:9px;letter-spacing:2px}.days-grid{grid-template-columns:repeat(2,1fr);gap:8px}.day-card{border-radius:12px}.day-card .d-top{padding:6px 10px 4px}.day-card .d-num{font-size:16px}.day-card .d-date-meta{font-size:9px}.day-card .d-body{padding:6px 8px 6px;gap:8px}.day-card .d-slot{padding:7px 6px;border-radius:8px}.day-card .d-label{font-size:10px;letter-spacing:1px;font-weight:900;padding-bottom:2px;border-bottom:2px solid;display:inline-block;align-self:flex-start}.day-card .d-slot .d-food{font-size:11px}.day-card .d-meal{display:none}.day-card .d-foot{padding:0 8px 6px}.day-card .d-note{font-size:10px;padding:4px 6px}.day-card.today::after{font-size:8px;padding:2px 8px;top:-6px;right:-4px}.cui-sidebar{display:none!important}.disclaimer-sidebar{display:none!important}.hero-pill{font-size:10px;padding:5px 8px;gap:3px}.hero-pill .pp-emoji{font-size:12px}.baby-info-bar{font-size:14px;padding:0 0 14px;letter-spacing:1px}.baby-info-bar::after{width:40px;margin:10px auto 0}.baby-info-bar .bi-icon{font-size:16px}.baby-info-bar .bb-edit{font-size:10px}.print-btn-wrap{padding:12px 14px 16px;gap:10px;background:linear-gradient(180deg,transparent 0%,rgba(250,247,242,.95) 25%,rgba(250,247,242,1) 100%)}.print-btn{padding:12px 24px;font-size:14px;letter-spacing:1px;border-radius:24px}html{scrollbar-width:none;-ms-overflow-style:none}html::-webkit-scrollbar{display:none}}
+@media(max-width:480px){.hero .hero-sub{font-size:10px;letter-spacing:.5px;gap:3px;padding:4px 10px}}
+@media(max-width:380px){.tab-switch{grid-template-columns:repeat(2,1fr);gap:8px;padding:10px 16px}.tab-switch .tab-btn{width:100%;padding:11px 8px;font-size:13px;border-radius:22px;text-align:center}}
+@media(max-width:360px){.hero .hero-sub{font-size:9px;letter-spacing:0;gap:2px;padding:3px 8px;flex-wrap:wrap;justify-content:center;max-width:100%}.hero-pill{font-size:9px;padding:4px 6px;gap:2px}.hero-pill .pp-emoji{font-size:11px}.hero h1{font-size:22px}.hero h1 .icon{font-size:18px}}
+.birth-modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(60,50,40,.5);z-index:999;display:none;align-items:center;justify-content:center;backdrop-filter:blur(6px);animation:overlayIn .35s ease}
+@keyframes overlayIn{from{opacity:0}to{opacity:1}}
+.birth-modal{background:#fffefc;border-radius:28px;padding:44px 40px 36px;max-width:460px;width:92%;box-shadow:0 24px 80px rgba(60,30,10,.18),0 0 0 1px rgba(220,180,140,.15);text-align:center;animation:modalBounce .5s cubic-bezier(.22,.61,.36,1);position:relative;overflow:hidden}
+@keyframes modalBounce{from{opacity:0;transform:translateY(30px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
+.birth-modal::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#f5c09a,#f5a87a,#e8b87a,#f5c09a)}
+.birth-modal .bm-illust{font-size:56px;line-height:1;margin-bottom:8px;animation:floatIcon 3s ease-in-out infinite}
+@keyframes floatIcon{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.birth-modal h3{font-family:var(--display);font-size:26px;color:var(--ink);margin-bottom:6px;font-weight:400;letter-spacing:1px}
+.birth-modal .bm-sub{font-size:14px;color:var(--ink-soft);margin-bottom:16px;line-height:1.7}
+.birth-modal .bm-sub em{font-style:normal;color:#d49160;font-weight:600}
+.birth-modal .bm-name{width:100%;padding:12px 16px;border:2px solid #e8d5c0;border-radius:14px;font-size:16px;font-family:var(--sans);color:var(--ink);background:#fdfaf5;outline:none;text-align:center;transition:border-color .2s;margin-bottom:24px}
+.birth-modal .bm-name:focus{border-color:#d4a870}
+.birth-modal .bm-name::placeholder{color:#d0c0b0;font-size:14px}
+.birth-picker{display:flex;gap:10px;justify-content:center;margin-bottom:32px}
+.birth-picker .bp-col{flex:1;max-width:120px}
+.birth-picker .bp-col label{display:block;font-size:11px;font-weight:700;color:#b8957a;margin-bottom:6px;letter-spacing:2px;text-transform:uppercase}
+.birth-picker .bp-col select{width:100%;padding:12px 8px;border:2px solid #e8d5c0;border-radius:14px;font-size:17px;font-family:var(--sans);color:var(--ink);background:#fdfaf5;outline:none;cursor:pointer;text-align:center;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%23b8957a' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;transition:border-color .2s,box-shadow .2s}
+.birth-picker .bp-col select:hover{border-color:#d4a870}
+.birth-picker .bp-col select:focus{border-color:#d49160;box-shadow:0 0 0 4px rgba(212,145,96,.12);outline:none}
+.birth-modal .birth-btn{margin-top:0;padding:14px 56px;border:none;background:linear-gradient(135deg,#f5a87a,#e89260);color:#fff;font-size:16px;font-weight:700;cursor:pointer;border-radius:28px;letter-spacing:2px;box-shadow:0 8px 28px rgba(245,168,122,.3);transition:all .3s;font-family:var(--sans)}
+.birth-modal .birth-btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(245,168,122,.4)}
+.birth-modal .birth-btn:active{transform:translateY(0)}
+.birth-modal .birth-skip{display:block;margin-top:16px;font-size:13px;color:#c8b098;cursor:pointer;border:none;background:none;font-family:var(--sans);transition:color .2s}
+.birth-modal .birth-skip:hover{color:#a08060}
+.birth-modal .birth-warn{display:none;margin-top:16px;padding:14px 16px;border-radius:16px;background:#fff6ef;border:1.5px solid #f0d2b8;color:#9a5a2c;font-size:12.5px;line-height:1.8;text-align:left;box-shadow:0 4px 14px rgba(200,120,60,.1);animation:birthWarnIn .35s ease}
+.birth-modal .birth-warn .bw-title{display:block;font-size:14px;font-weight:800;color:#c0683a;margin-bottom:4px;letter-spacing:.5px}
+.birth-modal .birth-warn strong{color:#c0683a;font-weight:700}
+.birth-modal .birth-warn .bw-emoji{font-size:15px;margin-right:2px}
+@keyframes birthWarnIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.age-notice{display:none;max-width:480px;margin:0 auto 18px;padding:14px 18px;border-radius:16px;background:linear-gradient(135deg,#fff6ef,#fdeede);border:1.5px solid #f0d2b8;color:#9a5a2c;font-size:13px;line-height:1.85;text-align:center;box-shadow:0 6px 20px rgba(200,120,60,.1);animation:birthWarnIn .4s ease}
+.age-notice .an-title{display:block;font-size:14px;font-weight:800;color:#c0683a;margin-bottom:3px;letter-spacing:.5px}
+.age-notice.an-info{background:linear-gradient(135deg,#f5faf8,#e8f4ed);border-color:#b8d8c4;color:#3e6e4a;box-shadow:0 6px 20px rgba(100,160,120,.1)}
+.age-notice.an-info .an-title{color:#3e6e4a}
+.age-notice.an-info strong{color:#3e6e4a}
+.age-notice strong{color:#c0683a}
+.baby-info-bar{text-align:center;padding:0 0 12px;margin:0;font-size:16px;color:#b8957a;letter-spacing:2px;position:relative}
+.baby-info-bar::after{content:'';display:block;width:50px;height:2px;background:linear-gradient(90deg,transparent,#e8c8a8,transparent);margin:8px auto 0;border-radius:2px}
+.baby-info-bar .bi-icon{font-size:18px;margin-right:4px}
+.baby-info-bar span{font-weight:700;color:#c0683a}
+.baby-info-bar .bb-link{cursor:pointer;color:#d49160;font-weight:600;text-decoration:none;border-bottom:1.5px dashed #e8c8a8;transition:color .2s,border-color .2s}
+.baby-info-bar .bb-link:hover{color:#b06030;border-bottom-color:#b06030}
+.baby-info-bar .bb-edit{cursor:pointer;font-size:11px;color:#d0b898;margin-left:8px;border-bottom:1px dashed #e0d0c0;transition:color .2s;text-decoration:none}
+.baby-info-bar .bb-edit:hover{color:#a08060;border-bottom-color:#a08060}
+/* 极小手机屏：宝宝信息栏缩小字号与字距，避免拥挤换行 */
+@media(max-width:360px){.baby-info-bar{font-size:13px;letter-spacing:.5px;padding-bottom:8px}.baby-info-bar .bi-icon{font-size:14px;margin-right:2px}.baby-info-bar .bb-edit{margin-left:6px}}
+@media(max-width:320px){.baby-info-bar{font-size:12px;letter-spacing:0}}
+@media(max-width:580px){.birth-modal{padding:32px 22px 28px;border-radius:22px}.birth-modal h3{font-size:21px}.birth-modal .bm-illust{font-size:42px}.birth-modal .bm-sub{font-size:13px;margin-bottom:12px}.birth-modal .bm-name{font-size:14px;padding:10px 14px;margin-bottom:18px}.birth-picker{gap:8px;margin-bottom:24px}.birth-picker .bp-col{max-width:100px}.birth-picker .bp-col select{font-size:15px;padding:10px 6px;padding-right:24px}.birth-modal .birth-btn{padding:12px 42px;font-size:15px}.days-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}.day-card .d-foot{padding:0 8px 8px}.day-card .d-note{font-size:12px;font-weight:600;line-height:1.45;padding:6px 8px 6px 10px;overflow:visible}.day-card .d-note .note-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.day-card .d-note.clipped[data-tip]{cursor:pointer}.day-card:hover{z-index:10}.day-card .d-note.clipped[data-tip]:hover::after,.day-card .d-note.clipped[data-tip].show-tip::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);min-width:120px;max-width:210px;padding:9px 13px;background:linear-gradient(135deg,rgba(74,52,40,.97),rgba(52,36,26,.97));color:#fff6ec;font-size:12px;font-weight:500;line-height:1.55;text-align:left;white-space:normal;border-radius:12px;box-shadow:0 12px 30px rgba(60,40,30,.4);opacity:0;animation:tipPop .18s ease forwards;pointer-events:none;z-index:60}.day-card .d-note.clipped[data-tip]:hover::before,.day-card .d-note.clipped[data-tip].show-tip::before{content:"";position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:rgba(52,36,26,.97);z-index:60}}
+@media print{html,body{height:auto!important;overflow:visible!important}.container{display:block!important;height:auto!important;padding-bottom:0!important}.app-head{position:static!important}.tab-switch{position:static!important;background:transparent!important;box-shadow:none!important;padding:0!important;margin:0!important}#panelStage{display:block!important;height:auto!important;overflow:visible!important;flex:none!important;padding:0!important}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="app-head" id="appHead">
+<div class="hero no-print"><div class="hero-deco"></div><div class="hero-title-row"><button class="hero-pill hero-pill-cui" onclick="showPopup('cui')"><span class="pp-emoji">🩺</span>崔玉涛</button><h1><span class="icon">🥣</span>辅食月历<span class="icon">🍼</span></h1><button class="hero-pill hero-pill-warn" onclick="showPopup('warn')"><span class="pp-emoji">💡</span>温馨提示</button></div><div class="hero-sub"><span class="dot"></span>科学排敏<span class="dot"></span>每日搭配已备好<span class="dot"></span>打印贴冰箱<span class="dot"></span></div></div>
+<div class="baby-info-bar no-print" id="babyInfoBar"><span class="bb-link" onclick="showBirthModal()">👶 点击设置宝宝生日 →</span></div>
+<div class="age-notice no-print" id="ageNotice"></div>
+</div>
+<div class="tab-switch" id="tabSwitch"></div>
+<div class="shared-head" id="sharedHead">
+<div class="panel-top" id="panelTop"><h2 id="ptTitle"></h2><div class="meta" id="ptMeta"></div></div>
+<div class="highlights" id="highlightsBox"></div>
+<div class="section-divider"><span class="line"></span><span>每 日 搭 配</span><span class="line"></span></div>
+</div>
+<div id="panelStage"></div>
+<div class="cui-sidebar no-print" id="cuiSidebar"><div class="cui-top"><div class="cui-avatar">崔</div><div class="cui-name">崔玉涛<small>教授 · 儿科专家</small></div><button class="cui-toggle" id="cuiToggle" aria-label="折叠/展开">-</button></div><div class="cui-bio">首都医科大学儿科系 · 历任北京儿童医院NICU副主任、和睦家儿科主任 · 抖音：崔玉涛</div><div class="cui-list"><div class="cui-item"><span class="cui-dot"></span>满6月龄开始添加辅食</div><div class="cui-item"><span class="cui-dot"></span>第一口辅食：高铁米粉</div><div class="cui-item"><span class="cui-dot"></span>每种新食材连续观察2-3天</div><div class="cui-item"><span class="cui-dot"></span>1岁前不加盐、糖、酱油、蜂蜜</div><div class="cui-item"><span class="cui-dot"></span>泥糊→碎末→小丁→块状</div><div class="cui-item"><span class="cui-dot"></span>红肉尽早添加，预防贫血</div><div class="cui-item"><span class="cui-dot"></span>蛋黄从1/4开始到全蛋</div></div></div>
+<div class="disclaimer-sidebar no-print" id="disclaimerSidebar"><div class="ds-icon">💡 <strong>温馨提示</strong></div><div class="ds-section"><div class="ds-label">📋 依据来源</div><div class="ds-text">依国家卫健委WS/T 678—2020及《中国婴幼儿喂养指南(2022)》编排。</div></div><div class="ds-section"><div class="ds-label">⚠️ 过敏预警</div><div class="ds-text">如出现皮疹、腹泻等不适请立即暂停并就医。</div></div><div class="ds-section"><div class="ds-label">🩺 特殊宝宝</div><div class="ds-text">过敏体质、早产、发育迟缓宝宝请遵医嘱调整。</div></div><div class="ds-section"><div class="ds-label">🥛 奶量优先</div><div class="ds-text">辅食以不影响每日600-800ml奶量为前提，不强迫进食。</div></div></div>
+<div class="mobile-fabs no-print" id="mobileFabs"><button class="mf-btn mf-cui" onclick="showPopup('cui')" title="崔玉涛建议">🩺</button><button class="mf-btn mf-warn" onclick="showPopup('warn')" title="温馨提示">💡</button></div><button class="to-top no-print" id="toTopBtn" title="回到顶部" aria-label="回到顶部"><span class="tt-arrow">↑</span></button>
+<div class="popup-overlay no-print" id="popupOverlay" onclick="if(event.target===this)closePopup()"><div class="popup-card"><div class="popup-header"><div class="ph-left" id="popupHeaderLeft"></div><button class="popup-close" onclick="closePopup()">✕</button></div><div class="popup-body" id="popupInner"></div></div></div>
+<div class="print-btn-wrap no-print"><button class="print-btn" onclick="showPopup('print')">🖨️ 打印贴冰箱</button><button class="print-btn pdf-btn" id="pdfBtn" onclick="downloadPDF()">📥 保存为PDF</button></div>
+<div class="footer-note no-print"></div>
+<div class="birth-modal-overlay no-print" id="birthOverlay"><div class="birth-modal"><div class="bm-illust">🍼</div><h3>宝宝信息</h3><p class="bm-sub">告诉小助手宝宝的名字和生日<br>自动匹配<em>当前月龄</em>和<em>真实日期</em></p><input class="bm-name" id="babyNameInput" type="text" placeholder="宝宝的小名（选填）" maxlength="10"><div class="birth-picker"><div class="bp-col"><label>年</label><select id="birthYear"></select></div><div class="bp-col"><label>月</label><select id="birthMonth"></select></div><div class="bp-col"><label>日</label><select id="birthDay"></select></div></div><button class="birth-btn" onclick="confirmBirth()">✨ 开始使用</button><button class="birth-skip" onclick="skipBirth()">先跳过，看全部月龄</button><div class="birth-warn" id="birthWarn"></div></div></div>
+<script>
+(function(){
+var months=[{id:'1',phase:'6 月龄',cls:'p1',title:'辅食<span>初体验</span>',meta:'泥糊状·每日1餐·逐一排敏',highlights:[{e:'🥄',t:'高铁米粉起步',d:'首口辅食必选强化铁米粉，从10g/餐开始递增'},{e:'🚫',t:'不加任何调味',d:'1岁前不添加盐、糖、酱油、蜂蜜'},{e:'📋',t:'3天排敏法',d:'每种新食材连续2-3天，观察无过敏再加下一种'}],days:[{d:1,a:'高铁米粉 10g',p:'母乳/配方奶',n:'稀糊状,首日观察,每勺观察反应'},{d:2,a:'高铁米粉 10g',p:'母乳/配方奶',n:'继续适应米粉,可略稠一点'},{d:3,a:'高铁米粉 12g',p:'母乳/配方奶',n:'米粉适应完成,明日加新食材'},{d:4,a:'米粉 12g + 南瓜泥 10g',p:'母乳/配方奶',n:'新食材:南瓜,蒸熟打泥'},{d:5,a:'米粉 12g + 南瓜泥 10g',p:'母乳/配方奶',n:'南瓜排敏 Day 2'},{d:6,a:'米粉 15g + 南瓜泥 15g',p:'母乳/配方奶',n:'南瓜排敏完成'},{d:7,a:'米粉 15g + 胡萝卜泥 10g',p:'母乳/配方奶',n:'新食材:胡萝卜,蒸熟打泥'},{d:8,a:'米粉 15g + 胡萝卜泥 10g',p:'母乳/配方奶',n:'胡萝卜排敏 Day 2'},{d:9,a:'米粉 15g + 胡萝卜泥 15g',p:'母乳/配方奶',n:'胡萝卜排敏完成'},{d:10,a:'米粉 15g + 土豆泥 10g',p:'母乳/配方奶',n:'新食材:土豆,蒸熟打泥'},{d:11,a:'米粉 15g + 土豆泥 10g',p:'母乳/配方奶',n:'土豆排敏 Day 2'},{d:12,a:'米粉 18g + 土豆泥 15g',p:'母乳/配方奶',n:'土豆排敏完成'},{d:13,a:'米粉 18g + 红薯泥 10g',p:'母乳/配方奶',n:'新食材:红薯,蒸熟打泥'},{d:14,a:'米粉 18g + 红薯泥 10g',p:'母乳/配方奶',n:'红薯排敏 Day 2'},{d:15,a:'米粉 18g + 红薯泥 15g',p:'母乳/配方奶',n:'红薯排敏完成'},{d:16,a:'米粉 20g + 菠菜泥 10g',p:'母乳/配方奶',n:'新食材:菠菜,焯水去草酸后打泥'},{d:17,a:'米粉 20g + 菠菜泥 10g',p:'母乳/配方奶',n:'菠菜排敏 Day 2'},{d:18,a:'米粉 20g + 菠菜泥 15g',p:'母乳/配方奶',n:'菠菜排敏完成'},{d:19,a:'米粉 20g + 苹果泥 10g',p:'母乳/配方奶',n:'新食材:苹果,蒸熟或刮泥勺'},{d:20,a:'米粉 20g + 苹果泥 10g',p:'母乳/配方奶',n:'苹果排敏 Day 2'},{d:21,a:'米粉 22g + 西兰花泥 10g',p:'母乳/配方奶',n:'新食材:西兰花,蒸熟打泥'},{d:22,a:'米粉 22g + 西兰花泥 10g',p:'母乳/配方奶',n:'西兰花排敏 Day 2'},{d:23,a:'米粉 22g + 西兰花泥 15g',p:'母乳/配方奶',n:'西兰花排敏完成'},{d:24,a:'米粉 25g + 南瓜胡萝卜泥',p:'母乳/配方奶',n:'混合已排敏食材,南瓜+胡萝卜'},{d:25,a:'米粉 25g + 土豆菠菜泥',p:'母乳/配方奶',n:'土豆+菠菜混合泥'},{d:26,a:'米粉 25g + 红薯苹果泥',p:'母乳/配方奶',n:'红薯+苹果混合,甜口搭配'},{d:27,a:'米粉 25g + 南瓜泥 20g',p:'母乳/配方奶',n:'米粉增量至25g'},{d:28,a:'米粉 25g + 西兰花土豆泥',p:'母乳/配方奶',n:'绿蔬+根茎搭配,丰富口感'},{d:29,a:'米粉 25g + 胡萝卜菠菜泥',p:'母乳/配方奶',n:'多种已排敏食材混合'},{d:30,a:'米粉 25g + 自选菜泥 15g',p:'母乳/配方奶',n:'自由复习一天,回顾本月新食材'}]},{id:'2',phase:'7 月龄',cls:'p2',title:'解锁<span>肉类</span>',meta:'碎末状·每日1-2餐·混合泥',highlights:[{e:'🥚',t:'蛋黄渐进',d:'1/4→1/2→全蛋黄,每阶段2-3天观察'},{e:'🥩',t:'红肉补铁优先',d:'猪肉、牛肉、猪肝(每周1-2次)补铁补血'},{e:'🍲',t:'荤素混合搭配',d:'南瓜鸡肉、西兰花土豆,营养互补'}],days:[{d:1,a:'米粉 22g + 1/4蛋黄',p:'南瓜泥 15g',n:'蛋黄初尝,1/4个碾碎拌入米粉'},{d:2,a:'米粉 22g + 1/4蛋黄',p:'胡萝卜泥 15g',n:'蛋黄排敏 Day 2'},{d:3,a:'米粉 25g + 1/4蛋黄',p:'土豆泥 15g',n:'蛋黄1/4排敏完成'},{d:4,a:'米粉 25g + 猪肉泥 10g',p:'菠菜泥 15g',n:'新食材:猪肉,选猪里脊煮熟打泥'},{d:5,a:'米粉 25g + 猪肉泥 10g',p:'红薯泥 15g',n:'猪肉排敏 Day 2'},{d:6,a:'米粉 25g + 猪肉泥 15g',p:'苹果泥 15g',n:'猪肉排敏完成'},{d:7,a:'米粉 25g + 1/2蛋黄',p:'西兰花泥 15g',n:'蛋黄增至1/2个,增量观察'},{d:8,a:'米粉 25g + 1/2蛋黄',p:'南瓜泥 15g',n:'蛋黄1/2 Day 2'},{d:9,a:'米粉 28g + 1/2蛋黄',p:'胡萝卜泥 15g',n:'蛋黄1/2增量完成'},{d:10,a:'米粉 28g + 鸡肉泥 10g',p:'土豆泥 15g',n:'新食材:鸡肉,鸡胸肉煮熟打泥'},{d:11,a:'米粉 28g + 鸡肉泥 10g',p:'菠菜泥 15g',n:'鸡肉排敏 Day 2'},{d:12,a:'米粉 28g + 鸡肉泥 15g',p:'红薯泥 15g',n:'鸡肉排敏完成'},{d:13,a:'小米粥 + 猪肝泥 10g',p:'苹果泥 15g',n:'新食材:猪肝,补铁佳品,每周1-2次'},{d:14,a:'米粉 28g + 猪肝泥 10g',p:'西兰花泥 15g',n:'猪肝排敏 Day 2'},{d:15,a:'米粉 30g + 猪肝泥 15g',p:'南瓜泥 15g',n:'猪肝排敏完成'},{d:16,a:'米粉 30g + 全蛋黄',p:'胡萝卜泥 15g',n:'全蛋黄初尝,增量至1个'},{d:17,a:'米粉 30g + 全蛋黄',p:'土豆泥 15g',n:'全蛋黄排敏 Day 2'},{d:18,a:'米粉 30g + 全蛋黄',p:'菠菜泥 15g',n:'全蛋黄完成,蛋黄解锁成功'},{d:19,a:'米粉 30g + 三文鱼泥 10g',p:'南瓜泥 15g',n:'新食材:三文鱼,蒸熟去刺打泥'},{d:20,a:'米粉 30g + 三文鱼泥 10g',p:'红薯泥 15g',n:'三文鱼排敏 Day 2'},{d:21,a:'米粉 30g + 三文鱼泥 15g',p:'苹果泥 15g',n:'三文鱼排敏完成'},{d:22,a:'米粉 30g + 牛肉泥 10g',p:'西兰花泥 15g',n:'新食材:牛肉,选牛里脊煮熟打泥'},{d:23,a:'米粉 30g + 牛肉泥 10g',p:'胡萝卜泥 15g',n:'牛肉排敏 Day 2'},{d:24,a:'米粉 30g + 牛肉泥 15g',p:'土豆泥 15g',n:'牛肉排敏完成'},{d:25,a:'米粉 30g + 南瓜鸡肉泥',p:'苹果泥 15g',n:'混合搭配日:南瓜+鸡肉已排敏'},{d:26,a:'米粉 30g + 菠菜猪肝泥',p:'香蕉泥 10g',n:'猪肝补铁日+菠菜,双倍补铁'},{d:27,a:'米粉 30g + 土豆牛肉泥',p:'红薯泥 15g',n:'土豆牛肉混合,荤素均衡'},{d:28,a:'米粉 30g + 西兰花三文鱼',p:'胡萝卜泥 15g',n:'三文鱼+绿蔬,DHA补脑'},{d:29,a:'米粉 30g + 胡萝卜鸡肉泥',p:'南瓜泥 15g',n:'胡萝卜鸡肉,色彩丰富'},{d:30,a:'米粉 30g + 自选搭配',p:'苹果泥 15g',n:'自由搭配日,回顾本月新解锁食材'}]},{id:'3',phase:'8 月龄',cls:'p3',title:'颗粒<span>进阶</span>',meta:'小颗粒·每日2餐·丰富蛋白',highlights:[{e:'🍜',t:'两餐模式',d:'上午+下午各一餐,两餐间隔4小时以上'},{e:'🫘',t:'肝脏补铁',d:'猪肝/鸡肝每周1-2次,每次不超过20g'},{e:'🧈',t:'引入豆腐',d:'嫩豆腐提供植物蛋白和钙,蒸熟碾碎'}],days:[{d:1,a:'米粉 30g + 蛋黄1个 + 菠菜碎',p:'南瓜粥 40g',n:'两餐模式启动,上午米粉下午粥'},{d:2,a:'烂面条 35g + 番茄碎 + 猪肉末 15g',p:'小米粥 40g + 苹果泥',n:'烂面条初尝,煮至软烂切碎'},{d:3,a:'米粉 30g + 蛋黄1个 + 西兰花碎',p:'胡萝卜粥 40g',n:'蔬菜从泥过渡到碎末'},{d:4,a:'稠粥 40g + 鸡肉末 15g + 南瓜丁',p:'米粉 25g + 香蕉泥',n:'鸡肉从泥过渡到碎末,颗粒感升级'},{d:5,a:'米粉 30g + 猪肝末 15g + 菠菜碎',p:'红薯粥 40g',n:'猪肝补铁日,切成碎末'},{d:6,a:'烂面条 35g + 牛肉末 15g + 胡萝卜碎',p:'土豆粥 40g + 苹果泥',n:'牛肉末搭配面食,易咀嚼'},{d:7,a:'稠粥 45g + 三文鱼碎 15g + 西兰花碎',p:'米粉 25g + 南瓜泥',n:'三文鱼DHA日'},{d:8,a:'米粉 30g + 蛋黄1个 + 番茄碎',p:'小米粥 45g + 菠菜碎',n:'碎末逐步加粗,锻炼咀嚼'},{d:9,a:'烂面条 40g + 鳕鱼末 15g + 胡萝卜碎',p:'稠粥 45g + 苹果丁',n:'新食材:鳕鱼,鲜美低敏'},{d:10,a:'稠粥 45g + 鸡肉末 20g + 土豆丁',p:'烂面条 40g + 南瓜泥',n:'鸡肉加量至20g'},{d:11,a:'米粉 30g + 蛋黄1个 + 牛肉末 15g',p:'红薯粥 45g + 西兰花碎',n:'牛肉补铁日'},{d:12,a:'稠粥 50g + 猪肝末 15g + 胡萝卜碎',p:'米粉 25g + 苹果丁',n:'猪肝补铁日'},{d:13,a:'烂面条 45g + 猪肉末 20g + 菠菜碎',p:'小米粥 45g + 南瓜丁',n:'猪肉增量至20g'},{d:14,a:'稠粥 50g + 鳕鱼末 20g + 番茄碎',p:'米粉 25g + 香蕉泥',n:'鳕鱼+番茄,鲜美开胃'},{d:15,a:'米粉 30g + 蛋黄1个 + 三文鱼碎 15g',p:'胡萝卜粥 50g + 苹果丁',n:'三文鱼+蛋黄组合'},{d:16,a:'烂面条 45g + 鸡肉末 20g + 西兰花碎',p:'稠粥 50g + 土豆丁',n:'绿蔬+白肉经典搭配'},{d:17,a:'稠粥 50g + 牛肉末 20g + 南瓜丁',p:'米粉 25g + 菠菜碎',n:'牛肉补铁日'},{d:18,a:'米粉 30g + 蛋黄1个 + 鳕鱼末 15g',p:'小米粥 50g + 胡萝卜丁',n:'鳕鱼+蛋黄,蛋白质丰富'},{d:19,a:'烂面条 50g + 猪肉末 20g + 番茄碎',p:'稠粥 50g + 苹果丁',n:'番茄猪肉面,开胃好吃'},{d:20,a:'稠粥 50g + 三文鱼碎 20g + 土豆丁',p:'米粉 25g + 南瓜碎',n:'三文鱼DHA日'},{d:21,a:'米粉 30g + 虾仁泥 10g',p:'小米粥 50g + 菠菜碎',n:'新食材:虾仁,去壳去虾线打泥'},{d:22,a:'米粉 30g + 虾仁泥 10g + 西兰花碎',p:'红薯粥 50g',n:'虾仁排敏 Day 2'},{d:23,a:'米粉 30g + 虾仁泥 15g + 胡萝卜碎',p:'稠粥 50g + 苹果丁',n:'虾仁排敏完成'},{d:24,a:'烂面条 50g + 蛋黄1个 + 番茄碎',p:'小米粥 50g + 土豆丁',n:'蛋黄+蔬菜面,营养均衡'},{d:25,a:'稠粥 50g + 猪肝末 15g + 菠菜碎',p:'米粉 25g + 南瓜丁',n:'猪肝补铁日,菠菜双倍铁'},{d:26,a:'米粉 30g + 牛肉末 20g + 胡萝卜碎',p:'烂面条 50g + 苹果丁',n:'牛肉胡萝卜经典搭配'},{d:27,a:'稠粥 55g + 鸡肉末 20g + 土豆丁',p:'小米粥 50g + 西兰花碎',n:'鸡肉土豆搭配升级'},{d:28,a:'烂面条 50g + 鳕鱼末 20g + 菠菜碎',p:'稠粥 55g + 南瓜丁',n:'鳕鱼菠菜,绿白搭配'},{d:29,a:'米粉 30g + 蛋黄1个 + 虾仁末 15g',p:'胡萝卜粥 55g + 苹果丁',n:'虾仁蛋黄,高蛋白组合'},{d:30,a:'稠粥 55g + 猪肉末 20g + 蔬菜碎',p:'米粉 25g + 香蕉',n:'本月复习,食材自由搭配'}]},{id:'4',phase:'9-12 月龄',cls:'p4',title:'自主<span>进食</span>',meta:'碎块+手指食物·每日3餐·向大人餐桌靠拢',highlights:[{e:'🍽️',t:'三餐+加餐',d:'每日3次正餐+1-2次加餐(水果/酸奶)'},{e:'🤏',t:'手指食物',d:'蒸胡萝卜条、香蕉段、软饭团,锻炼自主进食'},{e:'🍳',t:'全蛋解锁',d:'每天1个鸡蛋,蒸蛋羹/碎炒蛋/蛋黄粥均可'}],days:[{d:1,a:'软饭 50g + 猪肉碎 25g + 菠菜碎',p:'蒸蛋羹(1个蛋) + 南瓜条',n:'三餐模式启动,下午加水果'},{d:2,a:'小米粥 60g + 蛋黄1个 + 西兰花碎',p:'软饭 50g + 牛肉末 25g + 胡萝卜丁',n:'碎块状,可手抓南瓜条'},{d:3,a:'碎面条 60g + 鸡肉末 25g + 番茄碎',p:'稠粥 60g + 鳕鱼丁 20g + 菠菜碎',n:'午餐+晚餐两顿固体'},{d:4,a:'软饭 60g + 猪肝末 20g + 青菜碎',p:'蒸蛋羹 + 土豆条',n:'猪肝补铁日,加手指土豆条'},{d:5,a:'燕麦粥 60g + 蛋黄1个 + 苹果丁',p:'碎米饭 60g + 三文鱼丁 25g + 南瓜丁',n:'引入燕麦新谷物'},{d:6,a:'杂粮软饭 60g + 牛肉碎 25g + 番茄丁',p:'小米粥 60g + 虾仁末 20g + 西兰花碎',n:'牛肉番茄,补铁黄金搭档'},{d:7,a:'碎面条 65g + 鸡肉丁 25g + 胡萝卜丁',p:'软饭 60g + 鳕鱼丁 25g + 土豆丁',n:'鸡肉丁颗粒更粗,练咀嚼'},{d:8,a:'软饭 60g + 猪肉碎 25g + 冬瓜丁',p:'蒸蛋羹 + 蒸红薯糕',n:'猪肉冬瓜清淡搭配'},{d:9,a:'小米粥 65g + 蛋黄1个 + 猪肝末 15g',p:'碎米饭 60g + 三文鱼丁 25g + 菠菜碎',n:'猪肝补铁+三文鱼DHA'},{d:10,a:'碎面条 65g + 牛肉末 25g + 西兰花碎',p:'软饭 60g + 鸡肉丁 25g + 胡萝卜丁',n:'牛肉绿蔬,铁+维C好吸收'},{d:11,a:'软饭 65g + 虾仁丁 25g + 青菜碎',p:'燕麦粥 60g + 鳕鱼丁 20g + 番茄丁',n:'虾仁增量至25g'},{d:12,a:'杂粮粥 65g + 蛋黄1个 + 南瓜丁',p:'碎米饭 65g + 猪肉碎 30g + 菠菜碎',n:'猪肉增量至30g'},{d:13,a:'碎面条 65g + 鸡肉丁 30g + 土豆丁',p:'软饭 65g + 三文鱼丁 25g + 西兰花碎',n:'鸡肉增至30g'},{d:14,a:'软饭 65g + 牛肉碎 30g + 番茄丁',p:'蒸蛋羹 + 蒸胡萝卜糕',n:'牛肉番茄经典,手指胡萝卜糕'},{d:15,a:'燕麦粥 65g + 蛋黄1个 + 猪肝末 15g',p:'碎米饭 65g + 鳕鱼丁 25g + 冬瓜丁',n:'猪肝补铁日'},{d:16,a:'碎面条 70g + 虾仁丁 30g + 菠菜碎',p:'软饭 65g + 鸡肉丁 30g + 南瓜丁',n:'虾仁菠菜,高蛋白'},{d:17,a:'软饭 70g + 猪肉碎 30g + 胡萝卜丁',p:'小米粥 65g + 三文鱼丁 30g + 青菜碎',n:'三文鱼增量至30g'},{d:18,a:'杂粮软饭 70g + 牛肉丁 30g + 土豆丁',p:'蒸蛋羹 + 香蕉段',n:'牛肉丁颗粒加大,练咀嚼'},{d:19,a:'碎面条 70g + 鳕鱼丁 30g + 番茄丁',p:'软饭 65g + 猪肝末 15g + 菠菜碎',n:'鳕鱼+猪肝补铁双拼'},{d:20,a:'软饭 70g + 鸡肉丁 30g + 西兰花碎',p:'燕麦粥 65g + 蛋黄1个 + 苹果丁',n:'鸡肉绿蔬经典日'},{d:21,a:'小米粥 70g + 牛肉碎 30g + 胡萝卜丁',p:'碎米饭 70g + 虾仁丁 30g + 南瓜丁',n:'牛肉+虾仁,双蛋白日'},{d:22,a:'碎面条 70g + 猪肉丁 30g + 青菜碎',p:'软饭 70g + 鳕鱼丁 30g + 番茄丁',n:'猪肉鳕鱼,红白搭配'},{d:23,a:'软饭 70g + 三文鱼丁 30g + 土豆丁',p:'蒸蛋羹 + 蒸红薯糕',n:'三文鱼DHA日'},{d:24,a:'燕麦粥 70g + 蛋黄1个 + 猪肝末 15g',p:'碎米饭 70g + 鸡肉丁 30g + 菠菜碎',n:'猪肝补铁日'},{d:25,a:'碎面条 75g + 牛肉丁 30g + 西兰花碎',p:'软饭 70g + 虾仁丁 30g + 冬瓜丁',n:'牛肉绿蔬+虾仁,营养满分'},{d:26,a:'软饭 75g + 猪肉碎 30g + 番茄丁',p:'小米粥 70g + 鳕鱼丁 30g + 胡萝卜丁',n:'番茄猪肉,酸甜开胃'},{d:27,a:'杂粮软饭 75g + 鸡肉丁 35g + 土豆丁',p:'蒸蛋羹 + 苹果片',n:'鸡肉量增至35g'},{d:28,a:'碎面条 75g + 三文鱼丁 35g + 青菜碎',p:'软饭 70g + 牛肉碎 30g + 南瓜丁',n:'三文鱼增量至35g'},{d:29,a:'软饭 75g + 虾仁丁 35g + 蛋黄碎',p:'燕麦粥 70g + 猪肉碎 30g + 菠菜碎',n:'虾仁蛋黄,高蛋白组合'},{d:30,a:'碎米饭 80g + 牛肉丁 35g + 蔬菜碎',p:'蒸蛋羹 + 混合手指食物',n:'向大人餐桌靠拢!自主进食'}]}];
+var panelStage=document.getElementById('panelStage');
+var babyBirthday=null;
+var activePanelIdx=0;
+function getRealDates(monthIdx){
+  if(!babyBirthday)return null;
+  var b=new Date(babyBirthday);b.setHours(0,0,0,0);
+  var targetMonth; // 辅食月起始 = 满 targetMonth 个月那一天
+  if(monthIdx<3){
+    targetMonth=6+monthIdx; // 6/7/8 月龄：固定阶段辅食月
+  }else{
+    // 9-12 月龄：宝宝当前所处月龄（满 ageMonths 个月）
+    var now=new Date();now.setHours(0,0,0,0);
+    var ageMonths=0;
+    while(true){
+      var nx=new Date(b);nx.setMonth(nx.getMonth()+ageMonths+1);
+      if(nx<=now)ageMonths++; else break;
+    }
+    targetMonth=ageMonths;
+  }
+  // 辅食月 = 满 targetMonth 个月 → 满(targetMonth+1)个月前一天
+  // setMonth 自动遵循大小月规律：月末生日(29/30/31)溢出到下月1号(如 8/31+8月=5/1)、
+  // 平年2月28天/闰年29天也自动处理，无需手动判定
+  var start=new Date(b);start.setMonth(start.getMonth()+targetMonth);
+  var end=new Date(b);end.setMonth(end.getMonth()+targetMonth+1);
+  var realDates=[];
+  var cur=new Date(start);
+  while(cur<end){
+    realDates.push(new Date(cur));
+    cur.setDate(cur.getDate()+1);
+  }
+  return realDates;
+}
+function formatDate(d){var m=d.getMonth()+1;var day=d.getDate();return m+'/'+day;}
+function isToday(d){var t=new Date();t.setHours(0,0,0,0);return d.getTime()===t.getTime();}
+function foodIcon(text){
+    var t=text;
+    if(t.indexOf('母乳')!==-1&&t.indexOf('配方')!==-1)return '🍼';
+    if(t.indexOf('配方奶')!==-1)return '🍼';
+    var map=[
+    ['南瓜','🎃'],['胡萝卜','🥕'],['土豆','🥔'],['红薯','🍠'],['菠菜','🥬'],
+    ['西兰花','🥦'],['苹果','🍎'],['番茄','🍅'],['三文鱼 15g','🐟'],['鳕鱼 15g','🐟'],
+    ['虾仁','🦐'],['虾','🦐'],['鸡肉','🍗'],['猪肉','🥩'],['牛肉','🥩'],
+    ['猪肝','🫘'],['豆腐','🧈'],['蛋黄','🥚'],['鸡蛋','🥚'],['玉米','🌽'],
+    ['燕麦','🌾'],['小米','🌾'],['大米','🍚'],['米粉','🍚'],['酸奶','🥛'],
+    ['香蕉','🍌'],['冬瓜','🥒'],['母乳','🤱'],['配方奶','🍼'],['奶','🍼'],
+    ['软饭','🍚'],['粥','🥣'],['米饭','🍚'],['水果','🍓'],['青菜','🥬'],
+    ['绿蔬','🥬'],['根茎','🥔'],['自选','🌟'],['手指食','🤏'],
+    ['蒸糕','🍰'],['红薯糕','🍠']
+  ];
+  for(var i=0;i<map.length;i++){
+    if(t.indexOf(map[i][0])!==-1)return map[i][1];
+  }
+  return '🍽️';
+}
+function renderFood(text){
+  if(!text)return'';
+  var items=text.split('+').map(function(s){return s.trim();}).filter(function(s){return s.length;});
+  return items.map(function(it){
+    return '<span class="food-item">'+foodIcon(it)+' '+it+'</span>';
+  }).join('');
+}
+function buildPanel(idx){
+  var m=months[idx];
+  var realDates=getRealDates(idx);
+  var tb=months.map(function(mm,i){var c=i===idx?' active':'';return'<button class="tab-btn'+c+'" data-idx="'+i+'">'+mm.phase+'</button>';}).join('');
+  var hl=m.highlights.map(function(h){return'<div class="hl-card"><span class="hl-emoji">'+h.e+'</span><div class="hl-body"><div class="hl-title">'+h.t+'</div><div class="hl-desc">'+h.d+'</div></div></div>';}).join('');
+  function classifyNote(noteText){
+    if(!noteText)return'';
+    var t=noteText;
+    if(t.indexOf('Day 2')!==-1){return' note-testing note-bar-2';}
+    if(t.indexOf('排敏完成')!==-1||t.indexOf('增量完成')!==-1){return' note-done';}
+    if(t.indexOf('新食材')!==-1||t.indexOf('新谷物')!==-1){return' note-new';}
+    if(t.indexOf('首日')!==-1||t.indexOf('初次')!==-1||t.indexOf('初尝')!==-1||t.indexOf('排敏')!==-1||t.indexOf('增量')!==-1||t.indexOf('逐步')!==-1){return' note-testing note-bar-1';}
+    if(t.indexOf('开启')!==-1||t.indexOf('启动')!==-1||t.indexOf('复习')!==-1||t.indexOf('向大人')!==-1||t.indexOf('自由')!==-1||t.indexOf('三餐')!==-1||t.indexOf('两餐')!==-1||t.indexOf('全蛋黄')!==-1||t.indexOf('由泥过渡')!==-1){return' note-milestone';}
+    return' note-tip';
+  }
+  function buildCard(rd,d,hasDate){
+    var dateLabel,wk='',td='',weekHtml='';
+    if(hasDate){
+      dateLabel=formatDate(rd);
+      wk=(rd.getDay()===0||rd.getDay()===6)?' weekend':'';
+      td=isToday(rd)?' today':'';
+      var weekDay=['日','一','二','三','四','五','六'][rd.getDay()];
+      weekHtml='<span class="d-date-meta">周'+weekDay+'</span>';
+    }else{
+      var dn=m.days.indexOf(d)+1;if(dn<10)dn='0'+dn;
+      dateLabel=dn;
+    }
+    var noteHtml='';
+    if(d.n){
+      var cls=classifyNote(d.n);
+      var icon='✨';
+      if(cls.indexOf('note-new')!==-1)icon='🆕';
+      else if(cls.indexOf('note-testing')!==-1)icon='🔬';
+      else if(cls.indexOf('note-done')!==-1)icon='✅';
+      else if(cls.indexOf('note-milestone')!==-1)icon='🎉';
+      else icon='💡';
+      var tipTxt=icon+' '+d.n;
+      noteHtml='<div class="d-note'+cls+'" data-tip="'+tipTxt.replace(/"/g,'&quot;')+'"><span class="note-text">'+tipTxt+'</span><div class="note-bar"></div></div>';
+    }
+    return'<div class="day-card'+wk+td+'"><div class="d-top"><div class="d-num">'+dateLabel+'</div>'+weekHtml+'</div><div class="d-body"><div class="d-slot am"><div class="d-label">☀️ 上午</div><div class="d-food">'+renderFood(d.a)+'</div></div><div class="d-slot pm"><div class="d-label">🌙 下午</div><div class="d-food">'+renderFood(d.p)+'</div></div></div><div class="d-foot">'+noteHtml+'</div></div>';
+  }
+  var dc;
+  if(realDates){
+    dc=realDates.map(function(rd,i){
+      var d=m.days[i]||{a:'自选辅食',p:'母乳/配方奶',n:'自由复习日 · 巩固本月已排敏食材'};
+      return buildCard(rd,d,true);
+    }).join('');
+  }else{
+    dc=m.days.map(function(d){return buildCard(null,d,false);}).join('');
+  }
+  var html='<div class="tab-panel '+m.cls+(idx===activePanelIdx?' active':'')+'" id="panel'+m.id+'">';
+  html+='<div class="panel-print-head"><div class="panel-top"><h2>'+m.title+'</h2><div class="meta">'+m.meta+'</div></div><div class="highlights">'+hl+'</div><div class="section-divider"><span class="line"></span><span>每 日 搭 配</span><span class="line"></span></div></div>';
+  html+='<div class="days-grid">'+dc+'</div>';
+  html+='</div>';
+  return html;
+}
+function applyClipTips(){
+  var mobile=window.innerWidth<=580;
+  document.querySelectorAll('.day-card .d-note').forEach(function(note){
+    var txt=note.querySelector('.note-text');
+    if(!txt){note.classList.remove('clipped');return;}
+    note.classList.toggle('clipped', mobile && txt.scrollWidth>txt.clientWidth);
+  });
+}
+function renderAll(){panelStage.innerHTML=months.map(function(_,i){return buildPanel(i);}).join('');applyClipTips();}
+function switchToPanel(idx){
+  if(idx===activePanelIdx)return;
+  activePanelIdx=idx;
+  var panels=panelStage.querySelectorAll('.tab-panel');
+  panels.forEach(function(p){
+    p.classList.toggle('active',p===panels[idx]);
+  });
+  tabSwitch.querySelectorAll('.tab-btn').forEach(function(b){
+    b.classList.toggle('active',parseInt(b.getAttribute('data-idx'),10)===idx);
+  });
+  renderHead(idx);
+  locateToday();
+}
+function locateToday(){
+  var activePanel=panelStage.querySelector('.tab-panel.active');
+  if(!activePanel)return;
+  var todayCard=activePanel.querySelector('.day-card.today');
+  if(todayCard){
+    var ts=document.getElementById('tabSwitch');
+    var tabH=ts?ts.offsetHeight:0;
+    var cardT=todayCard.getBoundingClientRect().top+window.pageYOffset;
+    window.scrollTo({top:cardT-tabH-12,behavior:'smooth'});
+  }else{
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+renderAll();
+// 顶部共享月龄切换标签（只构建一次）
+var tabSwitch=document.getElementById('tabSwitch');
+tabSwitch.innerHTML=months.map(function(mm,i){return'<button class="tab-btn'+(i===activePanelIdx?' active':'')+'" data-idx="'+i+'">'+mm.phase+'</button>';}).join('');
+tabSwitch.addEventListener('click',function(e){
+  var btn=e.target.closest('.tab-btn');
+  if(!btn)return;
+  var idx=parseInt(btn.getAttribute('data-idx'),10);
+  switchToPanel(idx);
+});
+// 顶部共享区（阶段标题/要点）随月龄切换实时更新
+var sharedHead=document.getElementById('sharedHead');
+var ptTitle=document.getElementById('ptTitle');
+var ptMeta=document.getElementById('ptMeta');
+var highlightsBox=document.getElementById('highlightsBox');
+function renderHead(idx){
+  var m=months[idx];
+  sharedHead.className='shared-head '+m.cls;
+  ptTitle.innerHTML=m.title;
+  ptMeta.textContent=m.meta;
+  highlightsBox.innerHTML=m.highlights.map(function(h){return'<div class="hl-card"><span class="hl-emoji">'+h.e+'</span><div class="hl-body"><div class="hl-title">'+h.t+'</div><div class="hl-desc">'+h.d+'</div></div></div>';}).join('');
+  sharedHead.classList.remove('reveal'); void sharedHead.offsetWidth; sharedHead.classList.add('reveal');
+}
+renderHead(activePanelIdx);
+var toTopBtn=document.getElementById('toTopBtn');
+function syncToTop(){if(window.scrollY>400){toTopBtn.classList.add('show');}else{toTopBtn.classList.remove('show');}}
+window.addEventListener('scroll',syncToTop,{passive:true});
+toTopBtn.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+syncToTop();
+var cuiSidebar=document.getElementById('cuiSidebar');
+var cuiToggle=document.getElementById('cuiToggle');
+if(cuiToggle){
+  cuiToggle.addEventListener('click',function(){
+    var mini=cuiSidebar.classList.toggle('mini');
+    cuiToggle.textContent=mini?'+':'-';
+  });
+}
+function renderBabyBar(name, inRange, ageMonths, dateTxt){
+  var bar=document.getElementById('babyInfoBar');
+  if(inRange){
+    bar.innerHTML='<span class="bi-icon">👶</span> <span>'+name+'</span> '+ageMonths+'个月 · 今天是 <span>'+dateTxt+'</span><span class="bb-edit" onclick="showBirthModal()">修改</span>';
+  }else{
+    bar.innerHTML='<span class="bi-icon">👶</span> <span>'+name+'</span> · 6~12月辅食参考<span class="bb-edit" onclick="showBirthModal()">修改</span>';
+  }
+}
+function setBabyBirthday(dateStr){
+  babyBirthday=new Date(dateStr+'T00:00:00');
+  var ageMonths=0;
+  var now=new Date();
+  ageMonths=(now.getFullYear()-babyBirthday.getFullYear())*12+(now.getMonth()-babyBirthday.getMonth());
+  if(now.getDate()<babyBirthday.getDate())ageMonths--;
+  document.getElementById('birthOverlay').style.display='none';
+  var notice=document.getElementById('ageNotice');
+  if(ageMonths>12){
+    notice.className='age-notice no-print an-info';
+    notice.innerHTML='<span class="an-title">📅 宝宝已超过 12 月龄</span>当前约 <strong>'+ageMonths+' 个月</strong>，已超出本辅食日历 6~12 月龄的覆盖范围。日历中搭配仍可参考，食材建议升级为<strong>家常小块</strong>，逐步向家庭餐桌靠拢～';
+    notice.style.display='block';
+  }else{
+    notice.style.display='none';
+  }
+  var dateTxt=(now.getMonth()+1)+'月'+now.getDate()+'日';
+  var babyName=localStorage.getItem('bb_name')||'宝宝';
+  var inRange=(ageMonths>=6&&ageMonths<=12);
+  renderBabyBar(babyName, inRange, ageMonths, dateTxt);
+  localStorage.setItem('bb_birthday',dateStr);
+  var foundIdx=0;
+  if(ageMonths>=9)foundIdx=3;
+  else if(ageMonths>=8)foundIdx=2;
+  else if(ageMonths>=7)foundIdx=1;
+  else foundIdx=0;
+  renderAll();
+  switchToPanel(foundIdx);
+  locateToday();
+}
+function initBirthPicker(){
+  var now=new Date();
+  var cy=now.getFullYear();
+  var ySel=document.getElementById('birthYear');
+  for(var y=cy;y>=cy-3;y--){
+    var opt=document.createElement('option');opt.value=y;opt.textContent=y+'年';
+    if(y===cy-1)opt.selected=true;
+    ySel.appendChild(opt);
+  }
+  var mSel=document.getElementById('birthMonth');
+  for(var m=1;m<=12;m++){
+    var opt=document.createElement('option');opt.value=m;opt.textContent=m+'月';
+    mSel.appendChild(opt);
+  }
+  function updateDays(preferredDay){
+    var year=parseInt(ySel.value);
+    var month=parseInt(mSel.value);
+    var daysInMonth=new Date(year,month,0).getDate();
+    var dSel=document.getElementById('birthDay');
+    var curVal=(preferredDay!=null)?preferredDay:parseInt(dSel.value);
+    dSel.innerHTML='';
+    for(var d=1;d<=daysInMonth;d++){
+      var opt=document.createElement('option');opt.value=d;opt.textContent=d+'日';
+      if(d===Math.min(curVal||15,daysInMonth))opt.selected=true;
+      dSel.appendChild(opt);
+    }
+  }
+  window.updateDays=updateDays;
+  ySel.addEventListener('change',updateDays);
+  mSel.addEventListener('change',updateDays);
+  updateDays();
+}
+initBirthPicker();
+var savedBirth=localStorage.getItem('bb_birthday');
+if(savedBirth){
+  if(showAgeWarnings(savedBirth)){
+    setBabyBirthday(savedBirth);
+  }else{
+    document.getElementById('birthOverlay').style.display='flex';
+  }
+}else{
+  document.getElementById('birthOverlay').style.display='flex';
+}
+window.showBirthModal=function(){
+  var savedName=localStorage.getItem('bb_name');
+  if(savedName)document.getElementById('babyNameInput').value=savedName;
+  // 预填上次保存的出生年月日，方便直接修改
+  var saved=localStorage.getItem('bb_birthday');
+  if(saved){
+    var parts=saved.split('-');
+    if(parts.length===3){
+      var ySel=document.getElementById('birthYear');
+      var mSel=document.getElementById('birthMonth');
+      ySel.value=parseInt(parts[0],10);
+      mSel.value=parseInt(parts[1],10);
+      window.updateDays(parseInt(parts[2],10));
+    }
+  }
+  document.getElementById('birthOverlay').style.display='flex';
+};
+var popupHeaders={cui:'<span class="ph-emoji">🩺</span><div><div class="ph-title">崔玉涛</div><div class="ph-sub">教授 · 首都医科大学儿科系 · 历任北京儿童医院NICU副主任、和睦家儿科主任 · 北京崔玉涛诊所创始人兼院长 · 中国营养学会妇幼分会委员 · <span class="ph-book-link">抖音 733万粉丝 🎬</span></div></div>',warn:'<span class="ph-emoji">💡</span><div><div class="ph-title">温馨提示</div><div class="ph-sub">宝宝喂养安全须知</div></div>',print:'<span class="ph-emoji">🖨️</span><div><div class="ph-title">打印贴冰箱</div><div class="ph-sub">打印前请确认</div></div>'};
+var popupContents={
+  cui:'<div class="cui-group"><div class="cui-group-head" onclick="this.parentElement.classList.toggle(\'cui-folded\')"><span class="cui-group-icon">🍼</span><span class="cui-group-label">喂养要点</span><span class="cui-group-arrow">▾</span></div><div class="cui-group-body"><div class="cui-item"><span class="cui-num">1</span>满6月龄开始添加辅食</div><div class="cui-item"><span class="cui-num">2</span>第一口辅食：高铁米粉</div><div class="cui-item"><span class="cui-num">3</span>每种新食材连续观察2-3天</div><div class="cui-item"><span class="cui-num">4</span>1岁前不加盐、糖、酱油、蜂蜜</div><div class="cui-item"><span class="cui-num">5</span>食物质地：泥糊→碎末→小丁→块状</div><div class="cui-item"><span class="cui-num">6</span>红肉尽早添加，预防缺铁性贫血</div><div class="cui-item"><span class="cui-num">7</span>蛋黄从1/4开始，逐步增加到全蛋</div></div></div><div class="cui-footer-text">🎬 更多科学育儿知识，关注<span class="ph-book-link">崔玉涛抖音号（733万粉丝）🔗</span></div>',
+  warn:'<div class="ds-section"><div class="ds-label">📋 依据来源</div><div class="ds-text">本食谱依据国家卫健委WS/T 678—2020标准及《中国婴幼儿喂养指南(2022)》编排，数据经科学校准，仅供参考。</div></div><div class="ds-section"><div class="ds-label">⚠️ 过敏预警</div><div class="ds-text">每个宝宝体质不同，如出现皮疹、腹泻、呕吐等不适请立即暂停新食材，必要时就医。</div></div><div class="ds-section"><div class="ds-label">🩺 特殊宝宝</div><div class="ds-text">过敏体质、早产、发育迟缓的宝宝请遵医嘱调整，不可照搬通用食谱。</div></div><div class="ds-section"><div class="ds-label">🥛 奶量优先</div><div class="ds-text">辅食量以不影响每日600-800ml奶量为前提，不强迫进食，尊重宝宝饱饿信号。</div></div>',
+  print:'<div class="ds-section"><div class="ds-label">🖨️ 即将打开打印窗口</div><div class="ds-text">点击下方「继续打印」会唤起系统打印对话框。<b>请先确认电脑已连接打印机</b>，并在系统中已添加该设备；若打印列表为空，请先连接打印机，或选择「另存为 PDF」先保存文件。</div></div><div class="ds-section"><div class="ds-label">📄 打印内容说明</div><div class="ds-text">打印时只输出当前月份的日历卡片，顶部信息栏与侧边栏会自动隐藏，尺寸正好适合贴冰箱。点击「继续打印」后若未弹出窗口，请检查浏览器是否拦截了弹窗。</div></div><div class="popup-actions"><button class="popup-btn ghost" onclick="closePopup()">取消</button><button class="popup-btn primary" onclick="doPrint()">继续打印</button></div>'
+};
+window.showPopup=function(type){
+  document.getElementById('popupHeaderLeft').innerHTML=popupHeaders[type];
+  document.getElementById('popupInner').innerHTML=popupContents[type];
+  document.getElementById('popupOverlay').classList.add('show');
+};
+window.closePopup=function(){
+  document.getElementById('popupOverlay').classList.remove('show');
+};
+window.doPrint=function(){
+  closePopup();
+  window.print();
+};
+window.confirmBirth=function(){
+  var y=document.getElementById('birthYear').value;
+  var m=document.getElementById('birthMonth').value;
+  var d=document.getElementById('birthDay').value;
+  var name=document.getElementById('babyNameInput').value.trim();
+  if(name)localStorage.setItem('bb_name',name);
+  var mm=parseInt(m);if(mm<10)mm='0'+mm;
+  var dd=parseInt(d);if(dd<10)dd='0'+dd;
+  var dateStr=y+'-'+mm+'-'+dd;
+  if(!showAgeWarnings(dateStr)){return;}
+  setBabyBirthday(dateStr);
+};
+function showAgeWarnings(dateStr){
+  var b=new Date(dateStr+'T00:00:00');
+  var now=new Date();
+  var ageMonths=(now.getFullYear()-b.getFullYear())*12+(now.getMonth()-b.getMonth());
+  if(now.getDate()<b.getDate())ageMonths--;
+  var w=document.getElementById('birthWarn');
+  // >12 月龄：提示但不拦截
+  if(ageMonths>12){
+    if(w){
+      w.innerHTML='<span class="bw-emoji">📅</span><span class="bw-title">宝宝已超过 12 月龄</span>'+
+        '当前约 <strong>'+ageMonths+' 个月</strong>，已经超出本辅食日历覆盖范围（6~12 月龄）。<br>'+
+        '不过没关系～日历中的搭配依然可以参考，食材可从<strong>碎末丁块</strong>升级为<strong>家常小块</strong>，<br>'+
+        '逐步向家庭餐桌靠拢，注意少盐少油即可。';
+      w.style.display='block';
+    }
+    return true;
+  }
+  // 6~12 月龄：正常放行
+  if(ageMonths>=6){
+    if(w)w.style.display='none';
+    return true;
+  }
+  // <6 月龄：拦截
+  var target=new Date(b);target.setMonth(target.getMonth()+6);
+  var daysLeft=Math.max(0,Math.ceil((target-now)/(1000*60*60*24)));
+  if(w){
+    w.innerHTML='<span class="bw-emoji">⚠️</span><span class="bw-title">宝宝还不到 6 个月哦</span>'+
+      '当前约 <strong>'+ageMonths+' 个月</strong>，距离满 6 月龄还有约 <strong>'+daysLeft+' 天</strong>。<br>'+
+      '世界卫生组织与中国营养学会建议：<strong>满 6 月龄（约 180 天）再开始添加辅食</strong>，6 个月前应以母乳或配方奶为主。<br>'+
+      '宝宝满 6 个月后再来查看这份辅食日历吧，现在可以先收藏～';
+    w.style.display='block';
+  }
+  return false;
+}
+window.skipBirth=function(){
+  document.getElementById('birthOverlay').style.display='none';
+  var y=document.getElementById('birthYear').value;
+  var m=document.getElementById('birthMonth').value;
+  var d=document.getElementById('birthDay').value;
+  var mm=parseInt(m);if(mm<10)mm='0'+mm;
+  var dd=parseInt(d);if(dd<10)dd='0'+dd;
+  var dateStr=y+'-'+mm+'-'+dd;
+  var b=new Date(dateStr+'T00:00:00');
+  var now=new Date();
+  var ageMonths=(now.getFullYear()-b.getFullYear())*12+(now.getMonth()-b.getMonth());
+  if(now.getDate()<b.getDate())ageMonths--;
+  var name=document.getElementById('babyNameInput').value.trim()||localStorage.getItem('bb_name')||'宝宝';
+  var notice=document.getElementById('ageNotice');
+  if(ageMonths<6){
+    notice.className='age-notice no-print an-warn';
+    notice.innerHTML='<span class="an-title">⚠️ 宝宝还不到 6 个月</span>目前约 <strong>'+ageMonths+' 个月</strong>，6 月龄前应以母乳或配方奶为主，<strong>暂不建议添加辅食</strong>。下面是为你展示的全部月龄日历，仅作提前了解参考～';
+    notice.style.display='block';
+  }else if(ageMonths>12){
+    notice.className='age-notice no-print an-info';
+    notice.innerHTML='<span class="an-title">📅 宝宝已超过 12 月龄</span>当前约 <strong>'+ageMonths+' 个月</strong>，已超出本辅食日历 6~12 月龄的覆盖范围。日历中搭配仍可参考，食材建议升级为<strong>家常小块</strong>，逐步向家庭餐桌靠拢～';
+    notice.style.display='block';
+  }else{
+    notice.style.display='none';
+  }
+  renderBabyBar(name, false, ageMonths, (now.getMonth()+1)+'月'+now.getDate()+'日');
+};
+window.downloadPDF=function(){
+  var activePanel=panelStage.querySelector('.tab-panel.active');
+  if(!activePanel)return;
+  var m=months[activePanelIdx];
+  var pdfBtn=document.getElementById('pdfBtn');
+  if(typeof html2pdf==='undefined'){
+    alert('PDF功能加载中，请稍后重试');
+    return;
+  }
+  if(pdfBtn){
+    pdfBtn.dataset.label=pdfBtn.innerHTML;
+    pdfBtn.innerHTML='<span class="btn-spin"></span>正在生成 PDF…';
+    pdfBtn.classList.add('loading');
+    pdfBtn.disabled=true;
+  }
+  function resetBtn(){
+    if(pdfBtn){pdfBtn.innerHTML=pdfBtn.dataset.label||'📥 保存为PDF';pdfBtn.classList.remove('loading');pdfBtn.disabled=false;}
+  }
+  function successBtn(){
+    if(pdfBtn){pdfBtn.innerHTML='✓ 已保存';pdfBtn.classList.remove('loading');pdfBtn.classList.add('pdf-done');pdfBtn.disabled=false;}
+    setTimeout(function(){if(pdfBtn){pdfBtn.classList.remove('pdf-done');resetBtn();}},1800);
+  }
+  var gridClone=activePanel.querySelector('.days-grid');
+  if(!gridClone){resetBtn();return;}
+
+  // 克隆网格放到屏幕外（不可见），onclone 时在虚拟文档里移回正常坐标截图——无需全屏遮罩
+  var clone=gridClone.cloneNode(true);
+  clone.style.width='960px';
+  var holder=document.createElement('div');
+  holder.id='pdf-holder';
+  holder.style.cssText='position:absolute;left:-9999px;top:0;width:960px;background:#fff;margin:0;padding:0';
+  holder.appendChild(clone);
+  document.body.appendChild(holder);
+
+  // PDF 专用样式：清阴影/动画、强制 4 列、卡片纯白、适度收紧间距字号（让单页更紧凑清晰）
+  var fixStyle=document.createElement('style');
+  fixStyle.id='pdf-fix-style';
+  fixStyle.textContent='#pdf-holder *{box-shadow:none!important;text-shadow:none!important;animation:none!important;transform:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}#pdf-holder .days-grid{display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:5px!important;width:960px!important;margin:0 auto!important;padding:0!important}#pdf-holder .day-card{background:#fff!important;border-radius:5px!important;border:1px solid #efe6da!important;font-size:9.5px!important;line-height:1.28!important}#pdf-holder .d-top{padding:2px 5px 1px!important}#pdf-holder .d-num{font-size:12px!important}#pdf-holder .d-week{font-size:8px!important}#pdf-holder .d-body{padding:2px 4px!important;gap:4px!important}#pdf-holder .d-slot{padding:2px 4px!important;border-radius:4px!important;gap:1px!important}#pdf-holder .d-label{font-size:7.5px!important;margin-bottom:1px!important}#pdf-holder .d-food{font-size:9.5px!important;line-height:1.25!important}#pdf-holder .d-food .food-item:not(:first-child){margin-top:1px!important}#pdf-holder .d-foot{padding:0 4px 2px!important}#pdf-holder .d-note{font-size:7px!important;padding:2px 4px!important;line-height:1.2!important;border-left-width:2px!important}';
+  document.head.appendChild(fixStyle);
+  // 测克隆体真实高度（应用紧凑样式后），供 html2canvas 限定截图边界
+  var cloneH=clone.getBoundingClientRect().height;
+
+  function cleanup(done){
+    try{document.body.removeChild(holder);}catch(e){}
+    try{var fs=document.getElementById('pdf-fix-style');if(fs)fs.remove();}catch(e){}
+    if(done){successBtn();}else{resetBtn();}
+  }
+
+  // 用 jsPDF 手动拼版：fit 与坐标按「真实克隆体尺寸」算（不信 html2canvas 的 canvas 输出尺寸，避免抓取视口空白导致偏位）
+  function buildSinglePage(canvas, realW, realH){
+    var jsPDFCtor=window.jspdf && window.jspdf.jsPDF;
+    if(!jsPDFCtor){ // 兜底：交给 html2pdf 原生（用真实尺寸限定截图）
+      html2pdf().set({margin:[0,0,0,0],filename:'宝宝辅食月历_'+m.phase.replace(/ /g,'')+'.pdf',image:{type:'png'},html2canvas:{scale:3,backgroundColor:'#ffffff',width:realW,height:realH,windowWidth:realW,windowHeight:realH,x:0,y:0,scrollX:0,scrollY:0},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}}).from(clone).save().then(function(){cleanup(true);}).catch(function(err){console.error(err);cleanup();alert('PDF生成失败，请重试');});
+      return;
+    }
+    var pxPerMm=96/25.4;
+    var contentWmm=realW/pxPerMm;
+    var contentHmm=realH/pxPerMm;
+    var margin=8, pageW=210, pageH=297;           // 标准 A4 留 8mm 白边
+    var pdf=new jsPDFCtor('p','mm','a4');
+    // 等比缩放（取能完整放进 A4 的最大比例），坐标按真实尺寸算
+    var fit=Math.min((pageW-margin*2)/contentWmm,(pageH-margin*2)/contentHmm);
+    var w=contentWmm*fit, h=contentHmm*fit;
+    var x=(pageW-w)/2, y=(pageH-h)/2;             // 居中
+    // 将 html2canvas 输出重绘到精确目标尺寸（按 PDF 输出 mm × 高 dpi），保证坐标与分辨率 100% 匹配
+    var dpi=12;                                   // ≈ 300dpi，12 px/mm
+    var tW=Math.round(w*dpi), tH=Math.round(h*dpi);
+    var tc=document.createElement('canvas');
+    tc.width=tW; tc.height=tH;
+    var ctx=tc.getContext('2d');
+    ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,tW,tH);
+    ctx.imageSmoothingEnabled=true; ctx.imageSmoothingQuality='high';
+    ctx.drawImage(canvas,0,0,tW,tH);
+    pdf.addImage(tc.toDataURL('image/jpeg',0.95),'JPEG',x,y,w,h);
+    pdf.save('宝宝辅食月历_'+m.phase.replace(/ /g,'')+'.pdf');
+    cleanup(true);
+  }
+
+  // 直接调 html2canvas（独立引入，绕过 html2pdf 封装），参数 100% 控制截图区域
+  if(typeof window.html2canvas==='undefined'){
+    cleanup();
+    alert('PDF组件加载中，请稍后重试');
+    return;
+  }
+  window.html2canvas(clone,{
+    scale:3,
+    backgroundColor:'#ffffff',
+    width:960,
+    height:cloneH,
+    windowWidth:960,
+    windowHeight:cloneH,
+    x:0, y:0, scrollX:0, scrollY:0,
+    logging:false,
+    useCORS:false,
+    removeContainer:true,
+    foreignObjectRendering:false,
+    onclone:function(doc){var h=doc.getElementById('pdf-holder');if(h){h.style.left='0px';h.style.top='0px';}}
+  }).then(function(canvas){
+    buildSinglePage(canvas, 960, cloneH);
+  }).catch(function(err){
+    console.error('html2canvas渲染失败:',err);
+    cleanup();
+    alert('PDF生成失败，请重试');
+  });
+};
+document.addEventListener('click',function(e){
+  var note=e.target.closest('.d-note[data-tip]');
+  if(note){
+    document.querySelectorAll('.d-note.show-tip').forEach(function(n){if(n!==note)n.classList.remove('show-tip');});
+    note.classList.toggle('show-tip');
+  }else{
+    document.querySelectorAll('.d-note.show-tip').forEach(function(n){n.classList.remove('show-tip');});
+  }
+});
+window.addEventListener('resize',function(){setTimeout(applyClipTips,30);});
+})();
+</script>
+</body>
+</html>
